@@ -1,0 +1,19 @@
+
+
+
+{% block content %}
+<div class="container mt-5" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <h2 class="text-dark">Registrar Nuevo Servicio</h2>
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            {{ form.as_p }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg">Publicar ahora</button>
+        <a href="{% url 'home' %}" class="btn btn-link">Cancelar</a>
+    </form>
+</div>
+{% endblock content %}

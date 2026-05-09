@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/login.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <nav  class="navbar">  
+                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+                <a class="navbar-brand" href="#">Citas</a>
+                <a class="navbar-brand" href="#">Empresas</a>
+                <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
+            <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+        </nav>
+
+    <header></header>
+    <main class="container">
+        {% load crispy_forms_tags %}
+<div class="card">
+
+<h2>Iniciar Sesión</h2>
+{% if messages %}
+    {% for message in messages %}
+        <p style="color: green;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+<form  class="form-group" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}   
+    <button class="boton" type="submit">Entrar</button>
+    <a class="boton" href="{% url 'register' %}">Registrarse</a>
+    <p style="margin-top: 10px;">
+        <a href="{% url 'password_reset' %}">¿Olvidastes tu contraseña?</a>
+    </p>    
+</form>
+</div>
+    </main>
+    <footer></footer>
+</body>
+</html>
+

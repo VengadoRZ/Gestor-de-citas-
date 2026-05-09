@@ -1,0 +1,115 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head> 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <link rel="stylesheet" href="{% static 'perfil/perfil.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ </head>
+ <body>
+    <header></header>
+    <nav class="navbar"> 
+                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+                <a class="navbar-brand" href="#">Citas</a>
+                <a class="navbar-brand" href="#">Empresas</a>
+                <a class="navbar-brand" href="{% url 'perfil' %}">perfil</a>
+                
+                  {% if user.is_authenticated %}
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
+                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+                    
+                
+                
+                  {% endif %}
+        </nav>
+        <main class="container">
+    
+ 
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h2 class="mb-0">Mi Perfil</h2>
+            </div>
+            <div class="card-body p-4">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p><strong>Usuario:</strong> {{ user.username }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Tipo de Perfil:</strong> {{ user.get_tipo_perfil_display }}</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    {% if user.tipo_perfil == 'cliente' %}
+                        {% if user.cliente %}
+                            <h5 class="mb-3 text-primary">Editar Información de Cliente</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Cédula</label>
+                                <input type="text" name="cedula" class="form-control" value="{{ user.cliente.cedula }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Teléfono</label>
+                                <input type="text" name="telefono" class="form-control" value="{{ user.cliente.telefono }}">
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                No has completado tu perfil de cliente. 
+                                <a href="{% url 'completar_perfil' %}" class="alert-link">Hazlo aquí</a>.
+                            </div>
+                        {% endif %}
+
+                    {% elif user.tipo_perfil == 'empresa' %}
+                        {% if user.empresa %}
+                            <h5 class="mb-3 text-success">Editar Información de Empresa</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Nombre del Negocio</label>
+                                <input type="text" name="nombre_negocio" class="form-control" value="{{ user.empresa.nombre_negocio }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">NIT / RIF</label>
+                                <input type="text" name="nit_rif" class="form-control" value="{{ user.empresa.nit_rif }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Dirección</label>
+                                <textarea name="direccion" class="form-control" rows="3">{{ user.empresa.direccion }}</textarea>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                No has completado tu perfil de empresa.
+                                <a href="{% url 'completar_perfil' %}" class="alert-link">Hazlo aquí</a>.
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'home' %}" class="boton">Volver</a>
+                        {% if user.cliente or user.empresa %}
+                            <button type="submit" class="boton">Guardar Cambios</button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</main>
+        <footer></footer>
+
+    
+ </body>
+ </html>

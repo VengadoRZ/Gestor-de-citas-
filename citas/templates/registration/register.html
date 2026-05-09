@@ -1,0 +1,54 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+        {% load static %}
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/register.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ </head>
+ <body>
+    <header></header>
+    <nav class="navbar"> 
+                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+                <a class="navbar-brand" href="#">Citas</a>
+                <a class="navbar-brand" href="#">Empresas</a>
+                <a class="navbar-brand" href="{% url 'perfil' %}">Perfil</a>
+                
+                  {% if user.is_authenticated %}
+                <form class="navbar-brand" id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
+                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+                    
+                
+                
+                  {% endif %}
+        </nav>
+        <main class="container">
+            <div class="card">
+            {% load crispy_forms_tags %}
+
+
+<h2>Registrar</h2>
+{% if messages %}
+    {% for message in messages %}
+        <p style="color: green;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+<form  class="form-group" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}   
+    <button class="boton" type="submit">Registrar</button>
+</form>
+            </div>
+        </main>
+        <footer></footer>
+
+    
+ </body>
+ </html>

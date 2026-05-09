@@ -1,0 +1,62 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Document</title>
+ </head>
+ <body>
+    <header></header>
+    <nav class="navbar"> 
+                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+                <a class="navbar-brand" href="#">Citas</a>
+                <a class="navbar-brand" href="#">Empresas</a>
+                <a class="navbar-brand" href="{% url 'perfil' %}">Perfil</a>
+                
+                  {% if user.is_authenticated %}
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
+                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+                    
+                
+                
+                  {% endif %}
+        </nav>
+        <main class="container">
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h4 class="mb-0">Completa tu perfil de Cliente</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="cedula" class="form-label">Cédula de Identidad</label>
+                        <input type="text" id="cedula" name="cedula" class="form-control" placeholder="Ej: 12345678" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono de Contacto</label>
+                        <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Ej: 0412-0000000" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Guardar y continuar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+        </main>
+        <footer></footer>
+
+    
+ </body>
+ </html>

@@ -1,0 +1,123 @@
+:root {
+    --primary-color: rgb(0, 0, 0);
+    --secondary-color: rgba(26, 254, 1, 0.45);
+    --bg-body: #f8f9fa;
+    --text-main: #2b2d42;
+    --white: #ffffff;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+}
+
+/* 1. RESET Y BASE */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-body);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* 1. EL HEADER (El saludo) */
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el H1 y el P */
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+}
+
+/* 2. EL CONTENEDOR (El que manda sobre todo) */
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* Alinea el saludo y la grid uno bajo el otro */
+    align-items: center;    /* CENTRA TODO LO QUE ESTÉ DENTRO */
+    margin: 0 auto;
+}
+
+/* 3. LA GRID (Donde viven las cards) */
+.grid {
+    display: flex;
+    flex-wrap: wrap;        /* Permite que se pongan una al lado de la otra */
+    justify-content: center; /* Centra las cards si sobran espacios */
+    gap: 20px;              /* Espacio entre tarjetas */
+    width: 100%;
+    max-width: 1200px;      /* Para que en pantallas gigantes no se separen de más */
+    padding: 20px;
+}
+
+/* 4. LA CARD (Para que no se vean gigantes) */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    width: 100%;            /* Por defecto en móvil */
+    max-width: 400px;       /* Tamaño máximo de cada tarjeta */
+    text-align: left;       /* El texto de la card suele verse mejor a la izquierda */
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.4rem;
+}
+
+/* 5. BOTONES Y EXTRAS */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    margin-top: auto; /* Empuja el botón al final de la card */
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* 6. SECCIÓN DE FEATURES (Debajo de las cards) */
+.features {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.feature-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.feature-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 250px;
+}
+
+/* RESPONSIVE PARA MÓVILES */
+@media (max-width: 600px) {
+    .card {
+        width: 100%; /* En celular la card ocupa todo el ancho */
+    }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <link rel="stylesheet" href="{% static 'citas/catalogo.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar"> 
+    <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+    <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
+
+    {% if user.is_authenticated %}
+        {% if user.tipo_perfil == 'empresa' %}
+            <a class="navbar-brand" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
+        {% else %}
+            <a class="navbar-brand" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
+        {% endif %}
+        
+        <!-- Formulario Logout -->
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
+        <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+        <a href="{% url 'register' %}" class="navbar-brand">Registro</a>
+    {% endif %}
+</nav>
+        
+    </header>
+    <main>
+        {% block content %}
+<div class="container">
+    <h2>Buscar Servicios</h2>
+    <div class="buscador">
+    <form method="GET" action="{% url 'catalogo_servicios' %}" class="mb-4">
+        <input type="text" name="q" value="{{ query }}" placeholder="Ej: Abogado, Limpieza..." class="form-control">
+        <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+    </form>
+    </div>
+
+    <div class="grid">
+        {% for s in servicios %}
+        
+            <div class="card">
+                
+                    <h2>{{ s.nombre }}</h2>
+                    <p class="card-text">Ofrecido por: <strong>{{ s.empresa.nombre_negocio }}</strong></p>
+                    <p>Precio: ${{ s.precio }}</p>
+                    <!-- Aquí se envía el ID del servicio a la URL de agendar -->
+                    <a href="{% url 'agendar_cita' s.id %}" class="btn btn-success">Agendar Cita</a>
+        
+            </div>
+        {% empty %}
+        <p>No se encontraron servicios que coincidan con tu búsqueda.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+    </main>
+    <footer></footer>
+    
+</body>
+</html>
+
+
+

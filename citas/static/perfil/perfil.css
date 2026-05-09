@@ -1,0 +1,162 @@
+/* =========================================
+   ESTILOS GENERALES Y LOGIN
+   ========================================= */
+
+/* Centrar el contenido en la pantalla */
+body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* La tarjeta del formulario */
+.card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #1c1e21;
+    text-align: center;
+    font-size: 24px;
+}
+
+/* =========================================
+   ESTILOS DE LOS INPUTS DE DJANGO (CRISPY)
+   ========================================= */
+
+/* Contenedor de cada campo (Django usa mb-3 o form-group) */
+.form-group, .mb-3 {
+    margin-bottom: 20px;
+}
+
+/* Etiquetas (Labels) */
+.form-group label, .mb-3 label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #4b4f56;
+    font-size: 14px;
+}
+
+/* Campos de texto y contraseña generados por Django */
+.form-group input, .mb-3 input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box; /* Evita que el input se salga del cuadro */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Efecto cuando haces click en el input */
+.form-group input:focus, .mb-3 input:focus {
+    border-color: #1877f2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+}
+
+/* El asterisco de campo obligatorio */
+.asteriskField {
+    color: #e41e3f;
+    margin-left: 3px;
+}
+
+/* =========================================
+   BOTONES Y ENLACES
+   ========================================= */
+
+.boton {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: filter 0.2s;
+}
+
+/* Botón Entrar (Azul) */
+button.boton {
+    background-color: #1877f2;
+    color: white;
+}
+
+/* Botón Registrarse (Gris o contorno) */
+a.boton {
+    background-color: #f0f2f5;
+    color: #1c1e21;
+    border: 1px solid #dddfe2;
+}
+
+.boton:hover {
+    filter: brightness(90%);
+}
+
+/* =========================================
+   MENSAJES DE ERROR Y ÉXITO
+   ========================================= */
+
+/* Errores de validación de Django */
+.invalid-feedback {
+    color: #fa3e3e;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Estilo para los mensajes de éxito de Django */
+p[style*="color: green;"] {
+    background-color: #d4edda;
+    color: #155724 !important;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #c3e6cb;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px; /* Evita que la tarjeta toque los bordes del celular */
+        min-height: 100vh; /* Asegura que se centre verticalmente en toda la pantalla */
+    }
+
+    .card {
+        padding: 20px; /* Reducimos el espacio interno para ganar área de lectura */
+        max-width: 100%; /* Se asegura de usar el ancho disponible */
+    }
+
+    .card h2 {
+        font-size: 20px; /* Texto un poco más pequeño para que no rompa líneas */
+    }
+
+    .boton {
+        padding: 15px; /* Botones más grandes para que sean fáciles de tocar con el dedo */
+    }
+}

@@ -1,0 +1,31 @@
+
+
+{% block content %}
+<div class="container">
+    <h2>📅 Mi Agenda de Citas</h2>
+    <p>Citas programadas para el mes actual:</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Servicio</th>
+                <th>Cliente</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
+                <td>{{ cita.servicio.nombre }}</td>
+                <td>{{ cita.cliente.username }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No tienes citas agendadas para este mes.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
