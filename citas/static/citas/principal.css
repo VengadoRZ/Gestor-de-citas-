@@ -19,6 +19,42 @@ body {
     margin: 0;
     line-height: 1.6;
 }
+/* Contenedor principal de la barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: flex-start; /* Alinea los elementos al inicio */
+    align-items: center;
+    gap: 20px; /* Espaciado uniforme entre los enlaces */
+    background-color: #ffffff; /* Fondo blanco como el resto de tu app */
+    padding: 15px 30px; /* Espaciado interno */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra suave debajo de la barra */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Tipografía limpia */
+
+}
+
+/* Estilo base para todos los enlaces de la barra */
+.navbar-brand {
+    text-decoration: none; /* Quita la línea de subrayado default */
+    color: #4a5568; /* Un gris oscuro elegante, menos agresivo que el negro puro */
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.2s ease; /* Transición suave para el diseño */
+}
+
+/* Efecto al pasar el mouse por encima (Hover) */
+.navbar-brand:hover {
+    color: #000000; /* Se vuelve negro al pasar el mouse */
+}
+
+/* Estilo específico para el botón de Cerrar Sesión (clase text-danger) */
+.navbar-brand.text-danger {
+    color: #e53e3e; /* Rojo suave/elegante para alertas */
+    margin-left: auto; /* ¡Truco! Empuja el botón de cerrar sesión hacia el extremo derecho */
+}
+
+.navbar-brand.text-danger:hover {
+    color: #c53030; /* Rojo un poco más oscuro al pasar el mouse */
+}
 
 /* 1. EL HEADER (El saludo) */
 header {
@@ -27,12 +63,12 @@ header {
     flex-direction: column;
     align-items: center; /* Centra el H1 y el P */
     text-align: center;
-    padding: 40px 20px;
-    background: white;
+    padding: 10px 20px;
+    /* background: white; */
 }
 
 /* 2. EL CONTENEDOR (El que manda sobre todo) */
-.container {
+.container1 {
     width: 100%;
     display: flex;
     flex-direction: column; /* Alinea el saludo y la grid uno bajo el otro */
@@ -52,7 +88,7 @@ header {
 }
 
 /* 4. LA CARD (Para que no se vean gigantes) */
-.card {
+.card1 {
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -64,11 +100,11 @@ header {
     flex-direction: column;
 }
 
-.card:hover {
+.card1:hover {
     transform: translateY(-10px);
 }
 
-.card h3 {
+.card1 h3 {
     margin: 0 0 15px 0;
     font-size: 1.4rem;
 }

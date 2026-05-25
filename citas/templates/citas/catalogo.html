@@ -9,8 +9,7 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
-        <nav class="navbar"> 
+    <nav class="navbar"> 
     <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
     <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
 
@@ -31,8 +30,7 @@
         <a href="{% url 'register' %}" class="navbar-brand">Registro</a>
     {% endif %}
 </nav>
-        
-    </header>
+    <header></header>
     <main>
         {% block content %}
 <div class="container">

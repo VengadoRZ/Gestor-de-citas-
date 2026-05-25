@@ -1,0 +1,149 @@
+/* --- ESTILOS EXCLUSIVOS PARA EL REGISTRO DE EMPRESA --- */
+
+/* Contenedor externo para centrar la tarjeta */
+.registro-empresa-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh;
+    padding: 20px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* La tarjeta del formulario */
+.tarjeta-formulario {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    width: 100%;
+}
+
+/* Encabezado */
+.tarjeta-formulario-header {
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+}
+
+.tarjeta-formulario-header h4 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Cuerpo interno */
+.tarjeta-formulario-body {
+    padding: 30px;
+}
+
+.texto-ayuda {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Separación de campos de texto */
+.grupo-input {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.etiqueta-input {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+/* Estilo para los inputs manuales y los automáticos de Django {{ field }} */
+.grupo-input input, 
+.grupo-input textarea, 
+.grupo-input select,
+.entrada-texto {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #1a202c;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Focus estilizado */
+.grupo-input input:focus, 
+.grupo-input textarea:focus,
+.entrada-texto:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Bloque de botones */
+.contenedor-botones-registro {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+/* Botón Negro Principal */
+.boton-finalizar {
+    width: 100%;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.boton-finalizar:hover {
+    background-color: #2d3748;
+}
+
+/* Botón Secundario de Enlace */
+.boton-cambiar-cuenta {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    text-align: center;
+    background-color: transparent;
+    color: #4a5568;
+    border: 1px solid #cbd5e1;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.boton-cambiar-cuenta:hover {
+    background-color: #f1f5f9;
+    color: #1a202c;
+}
+
+/* Footer de la tarjeta */
+.tarjeta-formulario-footer {
+    background-color: #f8fafc;
+    padding: 15px;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+}
+
+.texto-ayuda-mini {
+    color: #64748b;
+    font-size: 12px;
+}

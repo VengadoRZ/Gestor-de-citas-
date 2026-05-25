@@ -9,7 +9,7 @@
     <title>Document</title>
  </head>
  <body>
-    <header></header>
+    
     <nav class="navbar"> 
                 <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
                 <a class="navbar-brand" href="#">Citas</a>
@@ -29,6 +29,7 @@
                 
                   {% endif %}
         </nav>
+        <header></header>
         <main class="container">
             <div class="card">
             {% load crispy_forms_tags %}

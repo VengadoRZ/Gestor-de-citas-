@@ -1,0 +1,110 @@
+/* --- ESTILOS EXCLUSIVOS PARA EL FORMULARIO DE NUEVO SERVICIO --- */
+
+/* Ajusta el contenedor para que no ocupe todo el ancho de la pantalla y se vea centrado */
+.container.mt-5 {
+    max-width: 500px; /* Tamaño ideal para un formulario corto */
+    margin: 60px auto !important; /* Lo separa del navbar y lo centra */
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Título principal */
+.container.mt-5 h2.text-dark {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a202c !important;
+    margin-bottom: 10px;
+}
+
+/* Línea separadora sutil */
+.container.mt-5 hr {
+    border: 0;
+    border-top: 1px solid #edf2f7;
+    margin-bottom: 25px;
+}
+
+/* --- ESTILIZACIÓN DE LOS INPUTS GENERADOS POR {{ form.as_p }} --- */
+
+/* Estilo para los Labels (Nombre, Precio, etc.) */
+.container.mt-5 form p label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 8px;
+    margin-top: 15px;
+}
+
+/* Estilo para los Inputs que inyecta Django automáticamente */
+.container.mt-5 form p input[type="text"],
+.container.mt-5 form p input[type="number"],
+.container.mt-5 form p input,
+.container.mt-5 form p textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #1a202c;
+    outline: none;
+    box-sizing: border-box; /* Evita que los inputs se salgan del recuadro blanco */
+    margin-bottom: 5px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Efecto de enfoque (Focus) al hacer clic en un input */
+.container.mt-5 form p input:focus,
+.container.mt-5 form p textarea:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+
+/* --- BOTONES DE ACCIÓN --- */
+
+/* Forzamos a que los botones se organicen uno al lado del otro con espacio */
+.container.mt-5 form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Contenedor invisible para alinear los botones en horizontal */
+.container.mt-5 form button[type="submit"] {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+/* Botón Negro Principal (Publicar ahora) */
+.container.mt-5 .btn-primary.btn-lg {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: fit-content; /* Se ajusta a su texto */
+}
+
+.container.mt-5 .btn-primary.btn-lg:hover {
+    background-color: #2d3748 !important;
+}
+
+/* Botón Cancelar (Enlace sutil) */
+.container.mt-5 .btn-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #718096 !important;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 15px;
+    width: fit-content;
+    transition: color 0.2s;
+}
+
+.container.mt-5 .btn-link:hover {
+    color: #e53e3e !important; /* Se vuelve rojo suave al pasar el cursor */
+}

@@ -45,29 +45,29 @@
         {% endif %}
     </header>
 
-    <main class="container">
+    <main class="container1">
         <div class="grid">
             
             {% if user.tipo_perfil == 'cliente' %}
-            <div class="card">
+            <div class="card1">
                 <h3>Buscar Servicios</h3>
                 <p>Encuentra barberías, consultorios o talleres cerca de ti.</p>
                 <a href="#" class="btn btn-primary">Explorar Negocios</a>
             </div>
-            <div class="card">
+            <div class="card1">
                 <h3> Mis Citas</h3>
                 <p>Tienes <strong>2 citas</strong> programadas para esta semana.</p>
                 <a href="#" class="btn btn-primary">Ver mis Citas</a>
             </div>
             
             {% else %}
-            <div class="card">
+            <div class="card1">
                 <h3> Resumen de Hoy</h3>
                 <p>Tienes <strong>5 citas</strong> confirmadas para el día de hoy.</p>
                 <a href="#" class="btn btn-primary">Ver Agenda</a>
             </div>
             <!-- En tu home.html, dentro de la sección de Mis Servicios -->
-            <div class="card">
+            <div class="card1">
             <h3>Mis Servicios</h3>
             <p>Configura los precios y horarios de lo que ofreces.</p>
             <a href="{% url 'crear_servicio' %}" class="btn btn-outline-primary">Gestionar Servicios</a>

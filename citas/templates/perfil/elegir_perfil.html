@@ -1,32 +1,35 @@
   {% load static %}
     <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
  
  <nav class="navbar"> 
-                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-                <a class="navbar-brand" href="#">Citas</a>
-                <a class="navbar-brand" href="#">Empresas</a>
-                <a class="navbar-brand" href="{% url 'perfil' %}">perfil</a>
-                
-                  {% if user.is_authenticated %}
-                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-                    {% csrf_token %}
-                </form>
-                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
-                    {% else %}
-                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
-                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-                    
-                
-                
-                  {% endif %}
-        </nav>
+    <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+    <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
+
+    {% if user.is_authenticated %}
+        {% if user.tipo_perfil == 'empresa' %}
+            <a class="navbar-brand" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
+        {% else %}
+            <a class="navbar-brand" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
+        {% endif %}
+        
+        <!-- Formulario Logout -->
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
+        <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+        <a href="{% url 'register' %}" class="navbar-brand">Registro</a>
+    {% endif %}
+</nav>
         <main class="container">
 
 
 {% block content %}
-<div class="container mt-5">
+<div class="container1">
     <div class="row justify-content-center">
         <div class="col-md-8 text-center">
             <h1 class="mb-4">¡Bienvenido! Solo un paso más</h1>
@@ -37,7 +40,7 @@
             <form method="POST" class="d-flex justify-content-center gap-4">
                 {% csrf_token %}
                 
-                <div class="card">
+                <div class="card1">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title text-primary">Soy Cliente</h5>
                         <p class="card-text">Quiero buscar servicios, ver disponibilidad y agendar mis citas de forma rápida.</p>
@@ -47,7 +50,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="card">
+                <div class="card1">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title text-success">Soy Empresa</h5>
                         <p class="card-text">Quiero registrar mi negocio, ofrecer servicios y gestionar las citas de mis clientes.</p>

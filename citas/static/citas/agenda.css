@@ -1,0 +1,117 @@
+/* Contenedor Principal */
+.calendar-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.calendar-container h2 {
+    color: #1a202c;
+    font-size: 26px;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.calendar-container p {
+    color: #718096;
+    margin-bottom: 30px;
+}
+
+/* Rejilla estilo Calendario */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* Tarjeta del Día */
+.calendar-day {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: fit-content;
+}
+
+/* Encabezado del Día */
+.day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 8px;
+}
+
+.day-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1a202c;
+}
+
+.day-month {
+    font-size: 14px;
+    font-weight: 600;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Contenedor de citas */
+.appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Tarjeta de Cita Individual */
+.appointment-card {
+    background-color: #f8fafc;
+    border-left: 4px solid #000000; /* Detalle negro como tus botones principales */
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.appointment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    background-color: #edf2f7;
+}
+
+/* Textos internos de las Citas */
+.app-time {
+    font-size: 12px;
+    font-weight: 700;
+    color: #4a5568;
+}
+
+.app-service {
+    font-size: 15px;
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.app-client {
+    font-size: 13px;
+    color: #718096;
+}
+
+/* Estado Vacío */
+.no-appointments {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    background: #f7fafc;
+    border-radius: 12px;
+    color: #718096;
+    border: 2px dashed #e2e8f0;
+}

@@ -1,12 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar"> 
+    <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+    <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
 
-
-{% block content %}
-<div class="container mt-4">
-    <div class="card shadow">
+    {% if user.is_authenticated %}
+        {% if user.tipo_perfil == 'empresa' %}
+            <a class="navbar-brand" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
+        {% else %}
+            <a class="navbar-brand" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
+        {% endif %}
+        
+        <!-- Formulario Logout -->
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
+        <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+        <a href="{% url 'register' %}" class="navbar-brand">Registro</a>
+    {% endif %}
+</nav>
+    <header></header>
+    <main>
+        {% block content %}
+<div class="container1">
+    <div class="">
         <div class="card-header bg-primary text-white">
-            <h3>Confirmar Cita</h3>
+            <h2>Confirmar Cita</h2>
         </div>
-        <div class="card-body">
+        <div class="card1">
             <h4>Servicio: <strong>{{ servicio.nombre }}</strong></h4>
             <p>Empresa: {{ servicio.empresa.nombre_negocio }}</p>
             <p>Precio: ${{ servicio.precio }}</p>
@@ -32,3 +63,7 @@
     </div>
 </div>
 {% endblock %}
+    </main>
+    <footer></footer>
+</body>
+</html>

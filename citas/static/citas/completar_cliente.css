@@ -1,0 +1,95 @@
+/* --- ESTILOS EXCLUSIVOS PARA COMPLETAR PERFIL DE CLIENTE --- */
+
+/* Ajustamos el recuadro blanco para centrarlo y darle tamaño estético */
+.container.mt-5 {
+    max-width: 500px; /* Tamaño perfecto y compacto para tarjetas de formulario */
+    margin: 60px auto !important; /* Lo separa de la barra de navegación y lo centra */
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Título principal interno */
+.container.mt-5 h2.text-dark {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a202c !important;
+    margin-bottom: 10px;
+}
+
+/* Línea divisoria sutil */
+.container.mt-5 hr {
+    border: 0;
+    border-top: 1px solid #edf2f7;
+    margin-bottom: 25px;
+}
+
+/* --- ESTILIZACIÓN DE ENTRADAS DEL FORMULARIO DE CLIENTE ({{ form.as_p }}) --- */
+
+/* Estilo para las etiquetas de texto (Cédula de Identidad, Teléfono, etc.) */
+.container.mt-5 form p label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 8px;
+    margin-top: 15px;
+}
+
+/* Fuerza a los inputs automáticos de Django a ocupar todo el ancho de forma limpia */
+.container.mt-5 form p input,
+.container.mt-5 form p input[type="text"],
+.container.mt-5 form p input[type="tel"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #1a202c;
+    outline: none;
+    box-sizing: border-box; /* Crucial para que no se desborden de la tarjeta */
+    margin-bottom: 5px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Efecto focus iluminado al seleccionar un campo */
+.container.mt-5 form p input:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+
+/* --- BOTÓN PRINCIPAL (Guardar y continuar) --- */
+
+.container.mt-5 form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Convertimos el botón "Guardar y continuar" al estilo minimalista negro de tu app */
+.container.mt-5 .btn-primary.btn-lg {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: fit-content; /* Se adapta finamente al tamaño del texto */
+    transition: background-color 0.2s;
+}
+
+.container.mt-5 .btn-primary.btn-lg:hover {
+    background-color: #2d3748 !important; /* Gris oscuro al pasar el cursor */
+}
+
+/* Si tienes un enlace de cancelar o volver en este formulario */
+.container.mt-5 .btn-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #718096 !important;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 10px;}

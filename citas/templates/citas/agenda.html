@@ -1,30 +1,70 @@
-
-{% block content %}
-<div class="container mt-4">
-    <h2>📅 Mi Agenda de Citas</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     {% load static %}
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <link rel="stylesheet" href="{% static 'citas/agenda.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<nav class="navbar"> 
+                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+                
+                
+                <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
+                
+                  {% if user.is_authenticated %}
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <!-- <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a> -->
+                 <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
+                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+                    
+                
+                
+                  {% endif %}
+        </nav>
+       
+ <header></header>
+ <main>
+   {% block content %}
+<div class="calendar-container">
+    <h2>Mi Agenda de Citas</h2>
     <p>Citas programadas para este mes:</p>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Fecha y Hora</th>
-                <th>Servicio</th>
-                <th>Cliente</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cita in citas %}
-            <tr>
-                <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
-                <td>{{ cita.servicio.nombre }}</td>
-                <td>{{ cita.cliente.username }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3" class="text-center">No hay citas registradas para este mes.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% regroup citas by fecha_hora|date:"d/m/Y" as citas_por_dia %}
+
+    <div class="calendar-grid">
+        {% for grupo in citas_por_dia %}
+            <div class="calendar-day">
+                <div class="day-header">
+                    <span class="day-number">{{ grupo.grouper|slice:":2" }}</span>
+                    <span class="day-month">Mayo</span> </div>
+                
+                <div class="appointments-list">
+                    {% for cita in grupo.list %}
+                        <div class="appointment-card">
+                            <span class="app-time">⏰ {{ cita.fecha_hora|date:"H:i" }}</span>
+                            <strong class="app-service">{{ cita.servicio.nombre }}</strong>
+                            <span class="app-client">👤 {{ cita.cliente.username }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="no-appointments">
+                <p>No hay citas registradas para este mes.</p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
+</main>
+ <footer></footer>
+</body>
+</html>

@@ -188,7 +188,8 @@ def activate_account(request, uidb64, token):
         messages.success(request, 'Tu cuenta ha sido activada. Ya puedes iniciar sesión.')
         return redirect('login')
     else:
-        return render(request, 'registration/activation_invalid.html')
+        messages.error(request, 'El enlace de activacion es invalido o ha expirado.')
+        return redirect('login')
     
 
 @login_required

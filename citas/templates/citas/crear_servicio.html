@@ -1,6 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    <link rel="stylesheet" href="{% static 'citas/crear_servicio.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<nav class="navbar"> 
+                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+                
+                
+                <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
+                
+                  {% if user.is_authenticated %}
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <!-- <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a> -->
+                 <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
+                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+                    
+                
+                
+                  {% endif %}
+        </nav>
+       
 
-
-
+    <header></header>
+    <main>
+        
 {% block content %}
 <div class="container mt-5" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
     <h2 class="text-dark">Registrar Nuevo Servicio</h2>
@@ -17,3 +50,9 @@
     </form>
 </div>
 {% endblock content %}
+    </main>
+    <footer></footer>
+    
+</body>
+</html>
+

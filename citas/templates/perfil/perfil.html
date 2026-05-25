@@ -9,7 +9,7 @@
     <title>Document</title>
  </head>
  <body>
-    <header></header>
+    
     <nav class="navbar"> 
                 <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
                 <a class="navbar-brand" href="#">Citas</a>
@@ -20,7 +20,8 @@
                 <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                     {% csrf_token %}
                 </form>
-                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
+                <!-- <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a> -->
+                 <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
                     {% else %}
                     <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
                     <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
@@ -29,6 +30,8 @@
                 
                   {% endif %}
         </nav>
+       
+        <header></header>    
         <main class="container">
     
  
