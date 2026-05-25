@@ -1,37 +1,6 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-    <meta charset="UTF-8">
-        {% load static %}
-    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
- </head>
- <body>
-    <header></header>
-    <nav class="navbar"> 
-                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-                <a class="navbar-brand" href="#">Citas</a>
-                <a class="navbar-brand" href="#">Empresas</a>
-                <a class="navbar-brand" href="{% url 'perfil' %}">Perfil</a>
-                
-                  {% if user.is_authenticated %}
-                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-                    {% csrf_token %}
-                </form>
-                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
-                    {% else %}
-                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
-                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-                    
-                
-                
-                  {% endif %}
-        </nav>
+{% extends 'citas/base.html' %}
 
-    <main class="container">
-        {% block title %}Configurar Empresa - CitasApp{% endblock %}
+{% block title %}Configurar Empresa - CitasApp{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center mt-5">
@@ -83,8 +52,6 @@
                             Finalizar Registro
                         </button>
                     
-                         
-                    
                         <a href="{% url 'elegir_perfil' %}" class="boton">
                             Cambiar tipo de cuenta
                         </a>
@@ -98,10 +65,3 @@
     </div>
 </div>
 {% endblock %}
-    </main>
-    <footer></footer>
-
-
- </body>
- </html>
-

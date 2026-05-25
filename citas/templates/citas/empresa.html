@@ -1,21 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'citas/base.html' %}
+
+{% block content %}
     <header>
         <h1>Control de Citas</h1>
     </header>
 
-    <main>
+    <div>
         <h2>Empresa: {{ empresa.nombre }}</h2>
         <p>Dirección: {{ empresa.direccion }}</p>
-    </main>
-
-    <footer></footer>
-
-</body>
-</html>
+    </div>
+{% endblock %}
