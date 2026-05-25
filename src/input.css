@@ -1,1 +1,122 @@
 @import "tailwindcss";
+
+@theme {
+  --color-tertiary-container: #b55d00;
+  --color-on-background: #1b1b23;
+  --color-secondary-fixed-dim: #ddb7ff;
+  --color-surface-container-highest: #e4e1ed;
+  --color-on-primary-fixed-variant: #2f2ebe;
+  --color-glass-fill: rgba(255, 255, 255, 0.7);
+  --color-inverse-on-surface: #f2effb;
+  --color-inverse-primary: #c0c1ff;
+  --color-surface-tint: #494bd6;
+  --color-inverse-surface: #303038;
+  --color-error: #ba1a1a;
+  --color-background: #fcf8ff;
+  --color-on-secondary-container: #fffbff;
+  --color-secondary: #8127cf;
+  --color-surface-bright: #fcf8ff;
+  --color-surface-container-low: #f5f2fe;
+  --color-on-primary: #ffffff;
+  --color-on-secondary: #ffffff;
+  --color-on-surface: #1b1b23;
+  --color-tertiary: #904900;
+  --color-electric-violet: #7E22CE;
+  --color-error-container: #ffdad6;
+  --color-surface-container-lowest: #ffffff;
+  --color-secondary-fixed: #f0dbff;
+  --color-tertiary-fixed-dim: #ffb783;
+  --color-on-surface-variant: #464554;
+  --color-on-error-container: #93000a;
+  --color-tertiary-fixed: #ffdcc5;
+  --color-on-tertiary-fixed-variant: #703700;
+  --color-primary-container: #6063ee;
+  --color-on-secondary-fixed: #2c0051;
+  --color-on-tertiary-fixed: #301400;
+  --color-outline-variant: #c7c4d7;
+  --color-on-secondary-fixed-variant: #6900b3;
+  --color-bg-canvas: #F8FAFC;
+  --color-primary-fixed-dim: #c0c1ff;
+  --color-on-primary-fixed: #07006c;
+  --color-on-tertiary-container: #fffbff;
+  --color-surface: #fcf8ff;
+  --color-surface-container-high: #e9e6f3;
+  --color-surface-container: #efecf8;
+  --color-on-tertiary: #ffffff;
+  --color-surface-dim: #dbd8e4;
+  --color-surface-variant: #e4e1ed;
+  --color-primary-fixed: #e1e0ff;
+  --color-primary: #4648d4;
+  --color-secondary-container: #9c48ea;
+  --color-on-error: #ffffff;
+  --color-outline: #767586;
+  --color-deep-indigo: #4338CA;
+  --color-on-primary-container: #fffbff;
+  --color-glass-border: rgba(255, 255, 255, 0.4);
+
+  --spacing-margin-mobile: 16px;
+  --spacing-stack-sm: 8px;
+  --spacing-container-max: 1280px;
+  --spacing-stack-lg: 32px;
+  --spacing-stack-md: 16px;
+  --spacing-gutter: 24px;
+
+  --font-headline-lg: Plus Jakarta Sans, sans-serif;
+  --font-body-sm: Inter, sans-serif;
+  --font-headline-xl: Plus Jakarta Sans, sans-serif;
+  --font-body-md: Inter, sans-serif;
+  --font-headline-lg-mobile: Plus Jakarta Sans, sans-serif;
+  --font-label-bold: Hanken Grotesk, sans-serif;
+  
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 1.25;
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 1.5;
+  --text-headline-xl: 48px;
+  --text-headline-xl--line-height: 1.2;
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.6;
+  --text-headline-lg-mobile: 28px;
+  --text-headline-lg-mobile--line-height: 1.3;
+  --text-label-bold: 14px;
+  --text-label-bold--line-height: 1;
+}
+
+@layer utilities {
+    .text-headline-lg { font-weight: 700; }
+    .text-body-sm { font-weight: 400; }
+    .text-headline-xl { font-weight: 800; letter-spacing: -0.02em; }
+    .text-body-md { font-weight: 400; }
+    .text-headline-lg-mobile { font-weight: 700; }
+    .text-label-bold { font-weight: 700; letter-spacing: 0.05em; }
+}
+
+@layer components {
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .hero-gradient {
+        background: linear-gradient(135deg, #4648d4 0%, #8127cf 100%);
+    }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .btn-gradient {
+        background: linear-gradient(to right, #4338CA, #7E22CE);
+        transition: all 0.3s ease;
+    }
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    .btn-gradient:active {
+        transform: scale(0.95);
+    }
+    .input-focus:focus {
+        outline: none;
+        border-color: #4648d4;
+        box-shadow: 0 0 0 4px rgba(70, 72, 212, 0.1);
+    }
+}

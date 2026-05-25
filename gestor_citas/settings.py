@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'widget_tweaks',
 ]
 AUTH_USER_MODEL = 'citas.Usuario'
 LOGIN_REDIRECT_URL = 'home'

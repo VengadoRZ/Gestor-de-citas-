@@ -1,52 +1,125 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es">
+<html class="light" lang="es">
 <head> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Gestor de Citas{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>{% block title %}Dashboard | Gestor de Citas{% endblock %}</title>
+    
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Inter:wght@400;500&family=Hanken+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    {% block legacy_css %}
     <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+    {% endblock %}
     <link href="{% static 'citas/output.css' %}" rel="stylesheet">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <nav class="navbar"> 
-        <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-        
-        {% if user.is_authenticated %}
-            <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
-            {% if user.tipo_perfil == 'empresa' %}
-                <a class="navbar-brand" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
-            {% else %}
-                <a class="navbar-brand" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
-            {% endif %}
+<body class="{% block body_class %}bg-background text-on-background font-body-md min-h-screen selection:bg-primary/30{% endblock %}">
+    
+    {% block navbar %}
+    <!-- TopNavBar -->
+    <header class="fixed top-4 left-0 right-0 z-50 px-margin-mobile md:px-gutter">
+        <nav class="flex justify-between items-center px-8 py-3 max-w-container-max mx-auto bg-glass-fill backdrop-blur-xl border border-glass-border rounded-full shadow-md">
+            <div class="font-headline-lg text-on-surface font-bold tracking-tight">Gestor de Citas</div>
             
-            <!-- Formulario Logout -->
-            <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-                {% csrf_token %}
-            </form>
-            <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
-        {% else %}
-            <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-            <a href="{% url 'register' %}" class="navbar-brand">Registro</a>
-        {% endif %}
-    </nav>
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a class="{% if request.resolver_match.url_name == 'home' %}text-primary font-bold border-b-2 border-primary{% else %}text-on-surface-variant hover:text-primary{% endif %} pb-1 font-body-md transition-all duration-300" href="{% url 'home' %}">Inicio</a>
+                
+                {% if user.is_authenticated %}
+                    <a class="{% if request.resolver_match.url_name == 'perfil' %}text-primary font-bold border-b-2 border-primary{% else %}text-on-surface-variant hover:text-primary{% endif %} pb-1 font-body-md transition-all duration-300" href="{% url 'perfil' %}">Mi Perfil</a>
+                    
+                    {% if user.tipo_perfil == 'empresa' %}
+                        <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
+                    {% else %}
+                        <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
+                    {% endif %}
+                    
+                    <!-- Formulario Logout -->
+                    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                        {% csrf_token %}
+                    </form>
+                    <a href="#" onclick="document.getElementById('logout-form').submit();" class="text-error font-body-md hover:text-error-container transition-all duration-300">Cerrar Sesión</a>
+                {% else %}
+                    <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300" href="{% url 'login' %}">Iniciar Sesión</a>
+                    <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300" href="{% url 'register' %}">Registro</a>
+                {% endif %}
+            </div>
+            
+            <!-- Mobile Menu Icon (Placeholder) -->
+            <div class="md:hidden">
+                <span class="material-symbols-outlined text-primary">menu</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Espaciado para el TopNavBar fijo en las páginas que no sean el Home hero -->
+    <div class="pt-24"></div>
+    {% endblock %}
 
     {% if messages %}
-       {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">
-             {{ message }}
-          </div>
-       {% endfor %}
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter mt-4">
+            {% for message in messages %}
+                <div class="p-4 mb-4 text-sm rounded-lg {% if message.tags == 'error' %}bg-error-container text-on-error-container{% elif message.tags == 'success' %}bg-primary-fixed text-on-primary-fixed{% else %}bg-surface-variant text-on-surface-variant{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 
-    <main class="container">
+    <main class="{% block main_class %}{% endblock %}">
         {% block content %}
         {% endblock %}
     </main>
 
-    <footer style="text-align: center; padding: 20px; color: #888; font-size: 0.9rem;">
-        &copy; 2026 Gestor de Citas Pro - Todos los derechos reservados.
+    {% block footer %}
+    <!-- Footer -->
+    <footer class="w-full py-stack-lg px-gutter mt-stack-lg bg-glass-fill backdrop-blur-lg border-t border-glass-border rounded-t-3xl">
+        <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+            <div class="max-w-xs">
+                <div class="font-headline-lg text-on-surface font-bold mb-4">Gestor de Citas</div>
+                <p class="text-on-surface-variant font-body-sm opacity-80 mb-6">
+                    © 2026 Gestor de Citas. Innovación y eficiencia en cada cita.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-12 w-full md:w-auto">
+                <div class="flex flex-col gap-4">
+                    <span class="text-primary font-bold font-label-bold">Empresa</span>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Sobre nosotros</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Carreras</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Contacto</a>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <span class="text-primary font-bold font-label-bold">Servicios</span>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Agenda</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Perfiles</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Notificaciones</a>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <span class="text-primary font-bold font-label-bold">Legal</span>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Términos</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Privacidad</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
     </footer>
+    {% endblock %}
+
+    <!-- Interactive Atmospheric Script -->
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.animate-pulse');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            blobs.forEach(blob => {
+                blob.style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            });
+        });
+    </script>
 </body>
 </html>

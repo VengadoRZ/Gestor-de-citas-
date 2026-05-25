@@ -1,54 +1,120 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-    <meta charset="UTF-8">
-        {% load static %}
-    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
-    <link rel="stylesheet" href="{% static 'registration/register.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
- </head>
- <body>
-    <header></header>
-    <nav class="navbar"> 
-                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-                <a class="navbar-brand" href="#">Citas</a>
-                <a class="navbar-brand" href="#">Empresas</a>
-                <a class="navbar-brand" href="{% url 'perfil' %}">Perfil</a>
+{% extends 'citas/base.html' %}
+
+{% block body_class %}hero-gradient min-h-screen flex flex-col font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden{% endblock %}
+
+{% block legacy_css %}{% endblock %}
+
+
+
+{% block main_class %}flex-grow pt-24 pb-12 px-margin-mobile md:px-gutter flex items-center justify-center relative{% endblock %}
+
+{% block content %}
+
+<!-- Decorative Background Elements -->
+<div class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -z-10"></div>
+<div class="absolute -bottom-32 -right-32 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-3xl -z-10"></div>
+
+<div class="w-full max-w-lg">
+    <!-- Registration Card -->
+    <div class="glass-card rounded-[2rem] p-8 md:p-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div class="text-center mb-8">
+            <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Registrar</h1>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Crea tu cuenta profesional hoy mismo</p>
+        </div>
+        
+        <form class="space-y-6" method="post">
+            {% csrf_token %}
+            {% load widget_tweaks %}
+            
+            {% if form.non_field_errors %}
+                <div class="p-3 bg-error-container text-on-error-container rounded-lg text-sm text-center mb-4">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+            <div class="space-y-1.5 group">
+                <label class="block font-label-bold text-label-bold text-on-surface" for="{{ field.id_for_label }}">
+                    {{ field.label }} {% if field.field.required %}<span class="text-error">*</span>{% endif %}
+                </label>
                 
-                  {% if user.is_authenticated %}
-                <form class="navbar-brand" id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-                    {% csrf_token %}
-                </form>
-                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
+                <div class="relative">
+                    {% if field.errors %}
+                        {% render_field field class="w-full px-4 py-3 rounded-xl border border-error bg-error-container/10 input-focus text-on-surface" %}
                     {% else %}
-                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
-                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-                    
+                        {% render_field field class="w-full px-4 py-3 rounded-xl border border-outline-variant bg-surface-container-lowest input-focus text-on-surface" %}
+                    {% endif %}
+                </div>
                 
+                {% if field.errors %}
+                    <ul class="text-error text-xs mt-1 list-none p-0">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 
-                  {% endif %}
-        </nav>
-        <main class="container">
-            <div class="card">
-            {% load crispy_forms_tags %}
-
-
-<h2>Registrar</h2>
-{% if messages %}
-    {% for message in messages %}
-        <p style="color: green;">{{ message }}</p>
-    {% endfor %}
-{% endif %}
-<form  class="form-group" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}   
-    <button class="boton" type="submit">Registrar</button>
-</form>
+                {% if field.help_text %}
+                    <p class="font-body-sm text-body-sm text-on-surface-variant text-[12px] opacity-80 leading-tight">
+                        {{ field.help_text|safe }}
+                    </p>
+                {% endif %}
             </div>
-        </main>
-        <footer></footer>
+            {% endfor %}
+            
+            <!-- Submit Button -->
+            <button class="w-full py-4 px-6 rounded-full btn-gradient text-white font-label-bold text-label-bold uppercase tracking-wider mt-4" type="submit">
+                Registrar
+            </button>
+        </form>
+        
+        <div class="mt-8 pt-6 border-t border-outline-variant/30 text-center">
+            <p class="font-body-sm text-body-sm text-on-surface-variant">
+                ¿Ya tienes una cuenta? 
+                <a class="text-primary font-bold hover:underline" href="{% url 'login' %}">Iniciar Sesión</a>
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+    // Animación de envío
+    const form = document.querySelector('form.custom-form');
+    if(form) {
+        form.addEventListener('submit', (e) => {
+            const btn = e.target.querySelector('button[type="submit"]');
+            if(btn) {
+                btn.innerText = 'PROCESANDO...';
+                btn.classList.add('opacity-80');
+                // Dejamos que el formulario se envíe de forma nativa a Django
+            }
+        });
+    }
 
-    
- </body>
- </html>
+    // Elementos flotantes decorativos
+    const createDecoration = () => {
+        const div = document.createElement('div');
+        const size = Math.random() * 300 + 100;
+        div.style.width = size + 'px';
+        div.style.height = size + 'px';
+        div.style.position = 'fixed';
+        div.style.borderRadius = '50%';
+        div.style.background = 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%)';
+        div.style.top = Math.random() * 100 + 'vh';
+        div.style.left = Math.random() * 100 + 'vw';
+        div.style.zIndex = '-1';
+        div.style.pointerEvents = 'none';
+        div.animate([
+            { transform: 'translate(0, 0)' },
+            { transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)` }
+        ], {
+            duration: 5000 + Math.random() * 5000,
+            iterations: Infinity,
+            direction: 'alternate',
+            easing: 'ease-in-out'
+        });
+        document.body.appendChild(div);
+    };
+
+    for(let i = 0; i < 5; i++) createDecoration();
+</script>
+{% endblock %}
