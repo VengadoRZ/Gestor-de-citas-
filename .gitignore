@@ -1,0 +1,34 @@
+# Entornos virtuales
+env/
+venv/
+.env
+
+# Archivos de caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Base de datos SQLite (si no quieres subirla al repositorio)
+db.sqlite3
+
+# Node.js y dependencias de NPM
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos estáticos de Django
+staticfiles/
+# (Opcional) Si no deseas subir el CSS compilado de Tailwind:
+# citas/static/citas/output.css
+
+# Configuración de editores de código e IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
