@@ -1,43 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
-    <link rel="stylesheet" href="{% static 'registration/login.css' %}">
-    <title>Document</title>
-</head>
-<body>
-    <nav  class="navbar">  
-                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-                <a class="navbar-brand" href="#">Citas</a>
-                <a class="navbar-brand" href="#">Empresas</a>
-                <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
-            <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-        </nav>
+{% extends 'citas/base.html' %}
 
-    <header></header>
-    <main class="container">
-        {% load crispy_forms_tags %}
-<div class="card">
+{% block body_class %}hero-gradient min-h-screen flex flex-col font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden{% endblock %}
 
-<h2>Iniciar Sesión</h2>
-{% if messages %}
-    {% for message in messages %}
-        <p style="color: green;">{{ message }}</p>
-    {% endfor %}
-{% endif %}
-<form  class="form-group" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}   
-    <button class="boton" type="submit">Entrar</button>
-    <a class="boton" href="{% url 'register' %}">Registrarse</a>
-    <p style="margin-top: 10px;">
-        <a href="{% url 'password_reset' %}">¿Olvidastes tu contraseña?</a>
-    </p>    
-</form>
+{% block legacy_css %}{% endblock %}
+
+
+
+{% block main_class %}flex-grow flex items-center justify-center px-margin-mobile pt-24 pb-12 relative overflow-hidden{% endblock %}
+
+{% block content %}
+<!-- Decorative Ambient Orbs -->
+<div class="absolute -top-24 -left-24 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+<div class="absolute -bottom-24 -right-24 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse" style="animation-delay: -3s;"></div>
+
+<!-- Login Container -->
+<div class="w-full max-w-md glass-card rounded-[2rem] p-stack-lg z-10 animate-in fade-in zoom-in duration-500">
+    <div class="text-center mb-stack-lg">
+        <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Iniciar Sesión</h1>
+        <p class="text-body-sm text-on-surface-variant">Accede a tu panel de control y gestiona tus citas.</p>
+    </div>
+    
+    <form class="space-y-stack-md" method="post">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="p-3 bg-error-container text-on-error-container rounded-lg text-sm text-center mb-4">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <!-- Username Field -->
+        <div class="group">
+            <label class="block font-label-bold text-label-bold text-on-surface mb-2 px-1" for="{{ form.username.id_for_label }}">
+                Nombre de usuario <span class="text-error">*</span>
+            </label>
+            <div class="relative">
+                <input class="w-full bg-white border border-outline-variant rounded-xl px-4 py-3 text-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-outline/50" 
+                       id="{{ form.username.id_for_label }}" name="{{ form.username.name }}" 
+                       placeholder="Introduce tu usuario" required type="text">
+                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline/50 group-focus-within:text-primary transition-colors">person</span>
+            </div>
+            {% if form.username.errors %}
+                <p class="text-error text-xs mt-1 px-1">{{ form.username.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <!-- Password Field -->
+        <div class="group">
+            <label class="block font-label-bold text-label-bold text-on-surface mb-2 px-1" for="{{ form.password.id_for_label }}">
+                Contraseña <span class="text-error">*</span>
+            </label>
+            <div class="relative">
+                <input class="w-full bg-white border border-outline-variant rounded-xl px-4 py-3 text-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-outline/50" 
+                       id="{{ form.password.id_for_label }}" name="{{ form.password.name }}" 
+                       placeholder="••••••••" required type="password">
+                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline/50 group-focus-within:text-primary transition-colors">lock</span>
+            </div>
+            {% if form.password.errors %}
+                <p class="text-error text-xs mt-1 px-1">{{ form.password.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <!-- Forgot Password Link -->
+        <div class="flex justify-end px-1">
+            <a class="text-body-sm font-label-bold text-primary hover:text-deep-indigo transition-colors" href="{% url 'password_reset' %}">
+                ¿Olvidaste tu contraseña?
+            </a>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="pt-4 flex flex-col gap-4">
+            <button class="w-full bg-primary hover:bg-deep-indigo text-white font-label-bold text-label-bold py-4 rounded-full shadow-lg hover:shadow-primary/40 transform active:scale-95 transition-all duration-200" type="submit">
+                Entrar
+            </button>
+            <div class="relative flex items-center py-2">
+                <div class="flex-grow border-t border-outline-variant/50"></div>
+                <span class="flex-shrink mx-4 text-outline text-[12px] uppercase tracking-widest font-bold">O</span>
+                <div class="flex-grow border-t border-outline-variant/50"></div>
+            </div>
+            <a href="{% url 'register' %}" class="w-full text-center bg-white/40 hover:bg-white/60 text-primary border border-glass-border font-label-bold text-label-bold py-4 rounded-full transform active:scale-95 transition-all duration-200 backdrop-blur-sm">
+                Registrarse
+            </a>
+        </div>
+    </form>
 </div>
-    </main>
-    <footer></footer>
-</body>
-</html>
+<script>
+    // Animación de envío
+    const form = document.querySelector('form');
+    if(form) {
+        form.addEventListener('submit', (e) => {
+            const btn = e.target.querySelector('button[type="submit"]');
+            if(btn) {
+                btn.innerText = 'PROCESANDO...';
+                btn.classList.add('opacity-80');
+            }
+        });
+    }
 
+    // Elementos flotantes decorativos
+    const createDecoration = () => {
+        const div = document.createElement('div');
+        const size = Math.random() * 300 + 100;
+        div.style.width = size + 'px';
+        div.style.height = size + 'px';
+        div.style.position = 'fixed';
+        div.style.borderRadius = '50%';
+        div.style.background = 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%)';
+        div.style.top = Math.random() * 100 + 'vh';
+        div.style.left = Math.random() * 100 + 'vw';
+        div.style.zIndex = '-1';
+        div.style.pointerEvents = 'none';
+        div.animate([
+            { transform: 'translate(0, 0)' },
+            { transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)` }
+        ], {
+            duration: 5000 + Math.random() * 5000,
+            iterations: Infinity,
+            direction: 'alternate',
+            easing: 'ease-in-out'
+        });
+        document.body.appendChild(div);
+    };
+
+    for(let i = 0; i < 5; i++) createDecoration();
+</script>
+{% endblock %}
