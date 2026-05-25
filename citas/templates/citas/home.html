@@ -1,100 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Citas</title>
-</head>
-<body>
+{% extends 'citas/base.html' %}
+
+{% block content %}
+<header>
+    <h1>¡Hola, {{ user.username }}!</h1>
+    <p>Bienvenido a tu centro de control. Gestiona tus citas y optimiza tu tiempo hoy mismo.</p>
+    {% if not user.cliente and not user.empresa %}
+        <a href="{% url 'completar_perfil' %}" class="btn btn-white">Configurar mi perfil ahora</a>
+    {% endif %}
+</header>
+
+<div class="grid">
     
- <nav class="navbar"> 
-    <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-    <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
-
-    {% if user.is_authenticated %}
-        {% if user.tipo_perfil == 'empresa' %}
-            <a class="navbar-brand" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
-        {% else %}
-            <a class="navbar-brand" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
-        {% endif %}
-        
-        <!-- Formulario Logout -->
-        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-            {% csrf_token %}
-        </form>
-        <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
+    {% if user.tipo_perfil == 'cliente' %}
+    <div class="card">
+        <h3>Buscar Servicios</h3>
+        <p>Encuentra barberías, consultorios o talleres cerca de ti.</p>
+        <a href="#" class="btn btn-primary">Explorar Negocios</a>
+    </div>
+    <div class="card">
+        <h3> Mis Citas</h3>
+        <p>Tienes <strong>2 citas</strong> programadas para esta semana.</p>
+        <a href="#" class="btn btn-primary">Ver mis Citas</a>
+    </div>
+    
     {% else %}
-        <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-        <a href="{% url 'register' %}" class="navbar-brand">Registro</a>
+    <div class="card">
+        <h3> Resumen de Hoy</h3>
+        <p>Tienes <strong>5 citas</strong> confirmadas para el día de hoy.</p>
+        <a href="#" class="btn btn-primary">Ver Agenda</a>
+    </div>
+    <!-- En tu home.html, dentro de la sección de Mis Servicios -->
+    <div class="card">
+    <h3>Mis Servicios</h3>
+    <p>Configura los precios y horarios de lo que ofreces.</p>
+    <a href="{% url 'crear_servicio' %}" class="btn btn-outline-primary">Gestionar Servicios</a>
+    </div>
     {% endif %}
-</nav>
-    {% if messages %}
-       {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">
-             {{ message }}
-          </div>
-       {% endfor %}
-    {% endif %}
- 
-       <header>
-        <h1>¡Hola, {{ user.username }}!</h1>
-        <p>Bienvenido a tu centro de control. Gestiona tus citas y optimiza tu tiempo hoy mismo.</p>
-        {% if not user.cliente and not user.empresa %}
-            <a href="{% url 'completar_perfil' %}" class="btn btn-white">Configurar mi perfil ahora</a>
-        {% endif %}
-    </header>
 
-    <main class="container">
-        <div class="grid">
-            
-            {% if user.tipo_perfil == 'cliente' %}
-            <div class="card">
-                <h3>Buscar Servicios</h3>
-                <p>Encuentra barberías, consultorios o talleres cerca de ti.</p>
-                <a href="#" class="btn btn-primary">Explorar Negocios</a>
-            </div>
-            <div class="card">
-                <h3> Mis Citas</h3>
-                <p>Tienes <strong>2 citas</strong> programadas para esta semana.</p>
-                <a href="#" class="btn btn-primary">Ver mis Citas</a>
-            </div>
-            
-            {% else %}
-            <div class="card">
-                <h3> Resumen de Hoy</h3>
-                <p>Tienes <strong>5 citas</strong> confirmadas para el día de hoy.</p>
-                <a href="#" class="btn btn-primary">Ver Agenda</a>
-            </div>
-            <!-- En tu home.html, dentro de la sección de Mis Servicios -->
-            <div class="card">
-            <h3>Mis Servicios</h3>
-            <p>Configura los precios y horarios de lo que ofreces.</p>
-            <a href="{% url 'crear_servicio' %}" class="btn btn-outline-primary">Gestionar Servicios</a>
-            </div>
-            {% endif %}
+</div>
 
+<section class="features">
+    <h2>¿Cómo funciona el Gestor de Citas?</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <strong>1. Perfil</strong>
+            <p>Mantén tus datos actualizados para una mejor experiencia.</p>
         </div>
-
-        <section class="features">
-            <h2>¿Cómo funciona el Gestor de Citas?</h2>
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <strong>1. Perfil</strong>
-                    <p>Mantén tus datos actualizados para una mejor experiencia.</p>
-                </div>
-                <div class="feature-item">
-                    <strong>2. Agenda</strong>
-                    <p>Selecciona el horario que mejor se adapte a tu ritmo.</p>
-                </div>
-                <div class="feature-item">
-                    <strong>3. Notifica</strong>
-                    <p>Recibe recordatorios automáticos para no perder ninguna cita.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer style="text-align: center; padding: 20px; color: #888; font-size: 0.9rem;">
-        &copy; 2026 Gestor de Citas Pro - Todos los derechos reservados.
-    </footer>   
+        <div class="feature-item">
+            <strong>2. Agenda</strong>
+            <p>Selecciona el horario que mejor se adapte a tu ritmo.</p>
+        </div>
+        <div class="feature-item">
+            <strong>3. Notifica</strong>
+            <p>Recibe recordatorios automáticos para no perder ninguna cita.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

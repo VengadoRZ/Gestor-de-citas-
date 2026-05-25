@@ -1,40 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
-    <link rel="stylesheet" href="{% static 'citas/catalogo.css' %}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <nav class="navbar"> 
-    <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-    <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
+{% extends 'citas/base.html' %}
 
-    {% if user.is_authenticated %}
-        {% if user.tipo_perfil == 'empresa' %}
-            <a class="navbar-brand" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
-        {% else %}
-            <a class="navbar-brand" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
-        {% endif %}
-        
-        <!-- Formulario Logout -->
-        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-            {% csrf_token %}
-        </form>
-        <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar Sesión</a>
-    {% else %}
-        <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-        <a href="{% url 'register' %}" class="navbar-brand">Registro</a>
-    {% endif %}
-</nav>
-        
-    </header>
-    <main>
-        {% block content %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'citas/catalogo.css' %}">
+{% endblock %}
+
+{% block content %}
 <div class="container">
     <h2>Buscar Servicios</h2>
     <div class="buscador">
@@ -62,12 +32,3 @@
     </div>
 </div>
 {% endblock %}
-
-    </main>
-    <footer></footer>
-    
-</body>
-</html>
-
-
-

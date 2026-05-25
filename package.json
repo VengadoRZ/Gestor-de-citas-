@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "tailwind:watch": "npx @tailwindcss/cli -i ./src/input.css -o ./citas/static/citas/output.css --watch",
+    "tailwind:build": "npx @tailwindcss/cli -i ./src/input.css -o ./citas/static/citas/output.css --minify"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  }
+}
