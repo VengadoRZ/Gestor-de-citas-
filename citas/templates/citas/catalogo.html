@@ -1,34 +1,164 @@
 {% extends 'citas/base.html' %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'citas/catalogo.css' %}">
-{% endblock %}
+{% block title %}Catálogo de Servicios | Gestor de Citas{% endblock %}
+
+{% block legacy_css %}{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Buscar Servicios</h2>
-    <div class="buscador">
-    <form method="GET" action="{% url 'catalogo_servicios' %}" class="mb-4">
-        <input type="text" name="q" value="{{ query }}" placeholder="Ej: Abogado, Limpieza..." class="form-control">
-        <button type="submit" class="btn btn-primary mt-2">Buscar</button>
-    </form>
-    </div>
+<main class="max-w-container-max mx-auto px-4 md:px-gutter py-8 pb-stack-lg">
 
-    <div class="grid">
+    <!-- Search Hero Section -->
+    <section class="hero-gradient relative mb-10 overflow-hidden rounded-3xl p-8 md:p-12">
+        <!-- Decorative atmospheric blobs -->
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
+        <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-2xl mx-auto text-center">
+            <h1 class="font-headline-xl text-3xl md:text-headline-xl text-white mb-3">Encuentra el servicio perfecto</h1>
+            <p class="text-body-md text-white/90 mb-8 max-w-lg mx-auto">Reserva citas con los mejores profesionales en salud, tecnología y bienestar en un solo clic.</p>
+
+            <!-- Search Form -->
+            <form method="GET" action="{% url 'catalogo_servicios' %}"
+                  class="bg-white/10 backdrop-blur-md border border-white/20 p-2 rounded-full flex items-center shadow-lg w-full max-w-xl mx-auto">
+                <span class="material-symbols-outlined text-white/70 px-4 flex-shrink-0">search</span>
+                <input
+                    class="w-full bg-transparent border-none outline-none focus:ring-0 font-body-md py-3 placeholder:text-white/60 text-white"
+                    type="text" name="q" value="{{ query }}" placeholder="¿Qué servicio buscas hoy?"
+                >
+                <button
+                    type="submit"
+                    class="bg-white text-primary px-8 py-3 rounded-full font-label-bold text-label-bold flex-shrink-0 hidden md:block hover:scale-105 active:scale-95 transition-transform">
+                    Buscar
+                </button>
+            </form>
+            <!-- Mobile search button -->
+            <button form="search-form-mobile" type="submit"
+                class="bg-white text-primary px-6 py-3 rounded-full font-label-bold text-label-bold mt-4 md:hidden w-full hover:scale-105 active:scale-95 transition-transform">
+                Buscar
+            </button>
+        </div>
+    </section>
+
+    <!-- Category filters (decorative) -->
+    <section class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="font-headline-lg text-xl text-on-surface">Categorías</h2>
+        </div>
+        <div class="flex gap-3 overflow-x-auto pb-2" style="scrollbar-width: none;">
+            <button class="bg-primary text-white px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-primary transition-colors text-sm">Todos</button>
+            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[18px]">medical_services</span> Salud
+            </button>
+            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[18px]">spa</span> Bienestar
+            </button>
+            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[18px]">devices</span> Tecnología
+            </button>
+            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[18px]">fitness_center</span> Deporte
+            </button>
+            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[18px]">palette</span> Creatividad
+            </button>
+        </div>
+    </section>
+
+    <!-- Results info -->
+    {% if query %}
+    <p class="text-on-surface-variant font-body-sm mb-6">
+        Mostrando resultados para <strong class="text-primary">"{{ query }}"</strong>
+        — {{ servicios|length }} servicio{{ servicios|length|pluralize:"s" }} encontrado{{ servicios|length|pluralize:"s" }}
+    </p>
+    {% endif %}
+
+    <!-- Services Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
         {% for s in servicios %}
-        
-            <div class="card">
-                
-                    <h2>{{ s.nombre }}</h2>
-                    <p class="card-text">Ofrecido por: <strong>{{ s.empresa.nombre_negocio }}</strong></p>
-                    <p>Precio: ${{ s.precio }}</p>
-                    <!-- Aquí se envía el ID del servicio a la URL de agendar -->
-                    <a href="{% url 'agendar_cita' s.id %}" class="btn btn-success">Agendar Cita</a>
-        
+        <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-1">
+
+            <!-- Service Image or Placeholder -->
+            <div class="h-48 overflow-hidden relative bg-gradient-to-br from-primary/10 to-secondary/10">
+                {% if s.imagen %}
+                    <img
+                        src="{{ s.imagen.url }}"
+                        alt="{{ s.nombre }}"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    >
+                {% else %}
+                    <div class="w-full h-full flex flex-col items-center justify-center text-primary/40">
+                        <span class="material-symbols-outlined text-6xl" style="font-variation-settings: 'FILL' 1;">
+                            {% if s.categoria == 'salud' %}medical_services
+                            {% elif s.categoria == 'bienestar' %}spa
+                            {% elif s.categoria == 'tecnologia' %}devices
+                            {% elif s.categoria == 'deporte' %}fitness_center
+                            {% elif s.categoria == 'creatividad' %}palette
+                            {% else %}business_center
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endif %}
+
+                <!-- Category badge -->
+                {% if s.categoria %}
+                <div class="absolute top-3 right-3">
+                    <span class="bg-primary-container text-white text-[11px] px-3 py-1 rounded-full font-label-bold capitalize">
+                        {{ s.categoria }}
+                    </span>
+                </div>
+                {% endif %}
             </div>
+
+            <!-- Card content -->
+            <div class="p-5">
+                <div class="flex justify-between items-start mb-1">
+                    <h3 class="font-headline-lg text-base font-bold text-on-surface group-hover:text-primary transition-colors leading-snug flex-1 pr-2">{{ s.nombre }}</h3>
+                </div>
+                <p class="text-body-sm text-on-surface-variant mb-4 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">business</span>
+                    {{ s.empresa.nombre_negocio }}
+                </p>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-primary font-bold text-2xl font-headline-lg">${{ s.precio }}</span>
+                        <span class="text-outline text-body-sm">/sesión</span>
+                    </div>
+                    <a href="{% url 'agendar_cita' s.id %}"
+                       class="btn-gradient text-white px-4 py-2 rounded-xl font-label-bold text-body-sm hover:opacity-90 active:scale-95 transition-all">
+                        Agendar
+                    </a>
+                </div>
+            </div>
+        </article>
+
         {% empty %}
-        <p>No se encontraron servicios que coincidan con tu búsqueda.</p>
+        <!-- Empty state -->
+        <div class="col-span-full flex flex-col items-center justify-center py-20 text-center">
+            <span class="material-symbols-outlined text-6xl text-outline mb-4">search_off</span>
+            <h3 class="font-headline-lg text-xl text-on-surface mb-2">Sin resultados</h3>
+            <p class="text-on-surface-variant font-body-sm max-w-sm">
+                No se encontraron servicios que coincidan con tu búsqueda.
+                Intenta con otro término o limpia el filtro.
+            </p>
+            <a href="{% url 'catalogo_servicios' %}"
+               class="mt-6 btn-gradient text-white px-6 py-3 rounded-full font-label-bold text-label-bold">
+                Ver todos los servicios
+            </a>
+        </div>
         {% endfor %}
-    </div>
-</div>
+    </section>
+
+</main>
+
+<style>
+    .btn-gradient {
+        background: linear-gradient(135deg, #4648d4 0%, #8127cf 100%);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+</style>
 {% endblock %}

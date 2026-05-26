@@ -1,31 +1,294 @@
 {% extends 'citas/base.html' %}
 
-{% block content %}
-<div class="container mt-4">
-    <h2>📅 Mi Agenda de Citas</h2>
-    <p>Citas programadas para este mes:</p>
+{% block title %}Mi Agenda | Gestor de Citas{% endblock %}
 
-    <table class="table table-striped ">
-        <thead>
-            <tr>
-                <th>Fecha y Hora</th>
-                <th>Servicio</th>
-                <th>Cliente</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cita in citas %}
-            <tr>
-                <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
-                <td>{{ cita.servicio.nombre }}</td>
-                <td>{{ cita.cliente.username }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3" class="text-center">No hay citas registradas para este mes.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+{% block legacy_css %}{% endblock %}
+
+{% block content %}
+<main class="max-w-container-max mx-auto px-gutter py-8 pb-stack-lg">
+    <!-- Header Section -->
+    <section class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+            <h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Mi Agenda</h1>
+            <p class="text-on-surface-variant font-body-md max-w-2xl">Gestiona tus tiempos con precisión. Visualiza tus citas mensuales y optimiza tu flujo de trabajo diario.</p>
+        </div>
+        <div class="flex gap-4">
+            <a href="{% url 'crear_servicio' %}"
+                class="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full shadow-lg hover:opacity-90 transition-all active:scale-95">
+                <span class="material-symbols-outlined">add</span>
+                <span class="font-label-bold text-label-bold">Nuevo Servicio</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Main Calendar Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+        <!-- Calendar Container (Left/Center) -->
+        <div class="lg:col-span-8">
+            <div class="glass-panel rounded-3xl overflow-hidden glass-card">
+                <!-- Calendar Header -->
+                <div class="p-6 border-b border-glass-border flex items-center justify-between bg-white/40">
+                    <div class="flex items-center gap-3">
+                        <!-- Mes Anterior -->
+                        <a href="?mes={{ mes_anterior.month }}&anio={{ mes_anterior.year }}"
+                           class="w-9 h-9 rounded-full flex items-center justify-center bg-surface-container-high hover:bg-primary/10 hover:text-primary transition-all text-on-surface-variant"
+                           title="Mes anterior">
+                            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+                        </a>
+                        <h2 class="font-headline-lg text-2xl text-on-surface min-w-[180px] text-center">{{ mes|date:"F Y"|title }}</h2>
+                        <!-- Mes Siguiente -->
+                        <a href="?mes={{ mes_siguiente.month }}&anio={{ mes_siguiente.year }}"
+                           class="w-9 h-9 rounded-full flex items-center justify-center bg-surface-container-high hover:bg-primary/10 hover:text-primary transition-all text-on-surface-variant"
+                           title="Mes siguiente">
+                            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                        </a>
+                    </div>
+                    <div class="flex bg-surface-container-high p-1 rounded-xl">
+                        <button class="px-4 py-1.5 rounded-lg text-sm font-label-bold text-primary bg-white shadow-sm">Mes</button>
+                    </div>
+                </div>
+                <!-- Weekdays -->
+                <div class="grid grid-cols-7 border-b border-glass-border bg-surface-container-low/30">
+                    <div class="py-4 text-center font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Lun</div>
+                    <div class="py-4 text-center font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Mar</div>
+                    <div class="py-4 text-center font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Mié</div>
+                    <div class="py-4 text-center font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Jue</div>
+                    <div class="py-4 text-center font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Vie</div>
+                    <div class="py-4 text-center font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider text-primary">Sáb</div>
+                    <div class="py-4 text-center font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider text-primary">Dom</div>
+                </div>
+                <!-- Days Grid -->
+                <div id="calendar-grid" class="grid grid-cols-7 grid-rows-5 h-[600px]"
+                     data-year="{{ mes.year }}"
+                     data-month="{{ mes.month }}"
+                     data-month-name="{{ mes|date:'F' }}">
+                    <!-- Will be populated dynamically by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed List (Right Sidebar) -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+            <div class="glass-panel glass-card rounded-3xl p-6 flex-1 flex flex-col min-h-[400px]">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 id="selected-date-title" class="font-headline-lg text-xl text-on-surface">Selecciona un día</h3>
+                        <p id="selected-date-count" class="text-on-surface-variant text-body-sm">0 citas programadas</p>
+                    </div>
+                </div>
+                <div id="appointments-list" class="flex-grow overflow-y-auto pr-2 space-y-4 max-h-[500px]">
+                    <!-- Will be populated dynamically by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Citas Data JSON -->
+<script id="citas-data" type="application/json">
+[
+  {% for cita in citas %}
+  {
+    "id": {{ cita.id }},
+    "fecha_hora": "{{ cita.fecha_hora|date:'Y-m-d H:i' }}",
+    "fecha_iso": "{{ cita.fecha_hora.isoformat }}",
+    "dia": {{ cita.fecha_hora|date:"j" }},
+    "hora": "{{ cita.fecha_hora|date:'H:i' }}",
+    "servicio": "{{ cita.servicio.nombre|escapejs }}",
+    "precio": "{{ cita.servicio.precio }}",
+    "cliente": "{{ cita.cliente.usuario.username|escapejs }}",
+    "cliente_nombre": "{{ cita.cliente.usuario.get_full_name|escapejs }}",
+    "pagado": {{ cita.pagado|yesno:"true,false" }},
+    "estado": "{{ cita.estado }}"
+  }{% if not forloop.last %},{% endif %}
+  {% endfor %}
+]
+</script>
+
+<!-- URL para cambiar estado (se pasa a JS) -->
+<span id="cambiar-estado-url" data-url="{% url 'cambiar_estado_cita' cita_id=0 %}" class="hidden"></span>
+
+<style>
+    .day-cell:hover {
+        background: rgba(70, 72, 212, 0.05);
+    }
+    .day-active {
+        background: rgba(70, 72, 212, 0.1) !important;
+        border: 2px solid #4648d4 !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const calendarEl = document.getElementById('calendar-grid');
+    const selectedDateEl = document.getElementById('selected-date-title');
+    const selectedCountEl = document.getElementById('selected-date-count');
+    const appointmentsListEl = document.getElementById('appointments-list');
+
+    const year = parseInt(calendarEl.dataset.year);
+    const month = parseInt(calendarEl.dataset.month) - 1; // 0-indexed in JS Date
+
+    // Parse appointments
+    const citas = JSON.parse(document.getElementById('citas-data').textContent);
+
+    // Base URL for estado change (replace the trailing 0)
+    const baseEstadoUrl = document.getElementById('cambiar-estado-url').dataset.url.replace('/0/', '/');
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const adjustedFirstDay = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+    const totalDays = new Date(year, month + 1, 0).getDate();
+
+    calendarEl.innerHTML = '';
+
+    for (let i = 0; i < adjustedFirstDay; i++) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'day-cell border-r border-b border-glass-border p-3 opacity-30 bg-surface-container-low/20';
+        calendarEl.appendChild(emptyDiv);
+    }
+
+    const today = new Date();
+    let initialDayToSelect = null;
+
+    for (let day = 1; day <= totalDays; day++) {
+        const dayCitas = citas.filter(c => c.dia == day);
+
+        const dayDiv = document.createElement('div');
+        const dayOfWeek = new Date(year, month, day).getDay();
+        const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+        const isToday = (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day);
+
+        dayDiv.className = `day-cell border-r border-b border-glass-border p-3 cursor-pointer transition-all flex flex-col justify-between ${isWeekend ? 'bg-primary-fixed/5' : ''}`;
+        dayDiv.dataset.day = day;
+
+        let badgeHtml = '';
+        if (dayCitas.length > 0) {
+            badgeHtml = `<div class="flex flex-col gap-1"><span class="bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-full font-bold text-center">${dayCitas.length} cita${dayCitas.length > 1 ? 's' : ''}</span></div>`;
+            if (initialDayToSelect === null) initialDayToSelect = day;
+        }
+
+        const todayDot = isToday ? `<span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary"></span>` : '';
+
+        dayDiv.innerHTML = `
+            <span class="relative inline-block font-label-bold ${isToday ? 'text-primary font-extrabold' : 'text-on-surface'}">
+                ${day < 10 ? '0' + day : day}
+                ${todayDot}
+            </span>
+            ${badgeHtml}
+        `;
+
+        dayDiv.addEventListener('click', () => selectDay(day, dayDiv, dayCitas));
+        calendarEl.appendChild(dayDiv);
+    }
+
+    // Estado badge helper
+    function estadoBadge(estado) {
+        const map = {
+            'pendiente': { bg: 'bg-amber-100 text-amber-700', label: 'PENDIENTE' },
+            'activa':    { bg: 'bg-blue-100 text-blue-700',   label: 'ACTIVA' },
+            'finalizada':{ bg: 'bg-green-100 text-green-700', label: 'FINALIZADA' },
+        };
+        const s = map[estado] || map['pendiente'];
+        return `<span class="${s.bg} px-2 py-0.5 rounded text-[10px] font-bold">${s.label}</span>`;
+    }
+
+    function selectDay(day, element, dayCitas) {
+        document.querySelectorAll('.day-cell').forEach(c => c.classList.remove('day-active'));
+        element.classList.add('day-active');
+
+        const options = { weekday: 'long', day: 'numeric', month: 'short' };
+        const dateObj = new Date(year, month, day);
+        selectedDateEl.textContent = dateObj.toLocaleDateString('es-ES', options).replace(/^\w/, c => c.toUpperCase());
+        selectedCountEl.textContent = `${dayCitas.length} cita${dayCitas.length !== 1 ? 's' : ''} programada${dayCitas.length !== 1 ? 's' : ''}`;
+
+        appointmentsListEl.innerHTML = '';
+
+        if (dayCitas.length === 0) {
+            appointmentsListEl.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-12 text-center opacity-60">
+                    <span class="material-symbols-outlined text-4xl mb-2 text-primary">calendar_today</span>
+                    <p class="font-body-md text-on-surface-variant">No hay citas programadas para este día.</p>
+                </div>
+            `;
+        } else {
+            dayCitas.forEach(cita => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/30 hover:border-primary/40 transition-all group';
+                card.id = `cita-card-${cita.id}`;
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tight">${cita.hora}</span>
+                        ${estadoBadge(cita.estado)}
+                    </div>
+                    <h4 class="font-headline-lg text-base text-on-surface group-hover:text-primary transition-colors">${cita.servicio}</h4>
+                    <div class="flex items-center gap-2 mt-2 mb-3 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-sm">person</span>
+                        <span class="text-body-sm">${cita.cliente_nombre || cita.cliente}</span>
+                    </div>
+                    <!-- Estado Selector -->
+                    <form method="POST" action="${baseEstadoUrl}${cita.id}/" class="flex items-center gap-2 mt-2 pt-3 border-t border-outline-variant/20">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
+                        <select name="estado" onchange="this.form.submit()"
+                            class="flex-1 text-xs px-3 py-2 rounded-xl border border-outline-variant bg-surface-container-low outline-none focus:border-primary cursor-pointer transition-all">
+                            <option value="pendiente" ${cita.estado === 'pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
+                            <option value="activa"    ${cita.estado === 'activa'    ? 'selected' : ''}>🔵 Activa</option>
+                            <option value="finalizada" ${cita.estado === 'finalizada' ? 'selected' : ''}>✅ Finalizada</option>
+                        </select>
+                        <span class="text-xs text-on-surface-variant">Cambiar estado</span>
+                    </form>
+                `;
+                appointmentsListEl.appendChild(card);
+            });
+        }
+    }
+
+    // CSRF cookie helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Initial selection
+    const currentDay = today.getDate();
+    let defaultDay = 1;
+
+    if (today.getFullYear() === year && today.getMonth() === month) {
+        defaultDay = currentDay;
+    } else if (initialDayToSelect !== null) {
+        defaultDay = initialDayToSelect;
+    }
+
+    const cells = calendarEl.querySelectorAll('.day-cell');
+    let defaultCell = null;
+    let defaultCitas = [];
+
+    for (let cell of cells) {
+        if (parseInt(cell.dataset.day) === defaultDay) {
+            defaultCell = cell;
+            defaultCitas = citas.filter(c => c.dia == defaultDay);
+            break;
+        }
+    }
+
+    if (defaultCell) {
+        selectDay(defaultDay, defaultCell, defaultCitas);
+    } else {
+        const firstValidCell = calendarEl.querySelector('.day-cell[data-day]');
+        if (firstValidCell) {
+            const dayNum = parseInt(firstValidCell.dataset.day);
+            selectDay(dayNum, firstValidCell, citas.filter(c => c.dia == dayNum));
+        }
+    }
+});
+</script>
 {% endblock %}

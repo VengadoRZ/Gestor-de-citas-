@@ -22,6 +22,8 @@ from citas.views import home, register, completar_cliente, completar_perfil, ele
 from django.contrib.auth.views import LoginView 
 from django.contrib.auth import views as auth_views
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -37,6 +39,8 @@ urlpatterns = [
     path('perfil/', views.perfil, name='perfil'),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('calendario_cliente/', views.mis_citas, name='calendario_cliente'),
+    path('cancelar-cita/<int:cita_id>/', views.cancelar_cita, name='cancelar_cita'),
     
     path('reset/<uidb64>/<token>/', 
          auth_views.PasswordResetConfirmView.as_view(
@@ -52,6 +56,9 @@ urlpatterns = [
 # Para la Empresa: Ver sus citas del mes
     path('empresa/agenda/', views.agenda_empresa, name='agenda_empresa'),
     
+    # Cambiar estado de cita
+    path('empresa/agenda/cambiar-estado/<int:cita_id>/', views.cambiar_estado_cita, name='cambiar_estado_cita'),
+    
     # Para el Cliente: Buscar y agendar
     # Le puse name='catalogo_servicios' para que coincida con el HTML
     path('buscar/', views.catalogo_servicios, name='catalogo_servicios'),
@@ -59,4 +66,4 @@ urlpatterns = [
     # Esta ruta SIEMPRE debe recibir el ID del servicio
     path('agendar/<int:servicio_id>/', views.agendar_cita, name='agendar_cita'),
     path('empresa/nuevo-servicio/', views.crear_servicio, name='crear_servicio'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

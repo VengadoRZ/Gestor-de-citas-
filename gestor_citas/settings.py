@@ -135,3 +135,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Media files (Uploads: images, profile photos)
+import os
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

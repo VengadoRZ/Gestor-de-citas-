@@ -1,27 +1,74 @@
 {% extends 'citas/base.html' %}
 
+{% block title %}Completa tu Perfil de Cliente | Gestor de Citas{% endblock %}
+
+{% block legacy_css %}{% endblock %}
+
 {% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white text-center">
-                <h4 class="mb-0">Completa tu perfil de Cliente</h4>
+<main class="flex-grow flex items-center justify-center py-stack-lg px-4 relative overflow-hidden">
+    <!-- Decorative background blobs -->
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden opacity-20 pointer-events-none">
+        <div class="absolute -top-1/4 -left-1/4 w-[600px] h-[600px] bg-primary rounded-full blur-[120px]"></div>
+        <div class="absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-secondary rounded-full blur-[120px]"></div>
+    </div>
+
+    <div class="w-full max-w-[520px]">
+        <div class="glass-card p-8 md:p-10 rounded-[2rem] shadow-2xl">
+
+            <!-- Avatar / Header -->
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg ring-4 ring-primary/20 bg-primary-container flex items-center justify-center text-white text-3xl font-extrabold font-headline-xl mb-4">
+                    {{ user.username|slice:":2"|upper }}
+                </div>
+                <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-center text-on-surface">Completa tu perfil</h1>
+                <p class="text-on-surface-variant text-center font-body-sm mt-1">Cuéntanos un poco más sobre ti para agendar tus citas.</p>
             </div>
-            <div class="card-body p-4">
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="cedula" class="form-label">Cédula de Identidad</label>
-                        <input type="text" id="cedula" name="cedula" class="form-control" placeholder="Ej: 12345678" required>
+
+            <!-- Form -->
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Cédula -->
+                <div class="space-y-2">
+                    <label class="font-label-bold text-label-bold text-on-surface-variant px-1" for="cedula">Cédula de Identidad</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-outline pointer-events-none">badge</span>
+                        <input
+                            class="w-full pl-12 pr-4 py-4 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline/50 font-body-md shadow-sm"
+                            id="cedula" name="cedula" placeholder="V-00.000.000" type="text" required
+                        >
                     </div>
-                    <div class="mb-3">
-                        <label for="telefono" class="form-label">Teléfono de Contacto</label>
-                        <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Ej: 0412-0000000" required>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="space-y-2">
+                    <label class="font-label-bold text-label-bold text-on-surface-variant px-1" for="telefono">Teléfono de contacto</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-outline pointer-events-none">call</span>
+                        <input
+                            class="w-full pl-12 pr-4 py-4 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline/50 font-body-md shadow-sm"
+                            id="telefono" name="telefono" placeholder="+58 412 0000000" type="tel" required
+                        >
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Guardar y continuar</button>
-                </form>
+                </div>
+
+                <!-- Submit -->
+                <button
+                    class="w-full btn-gradient text-white font-label-bold text-label-bold py-4 rounded-full shadow-lg hover:shadow-primary/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    type="submit">
+                    Finalizar Registro
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </form>
+
+            <!-- Help link -->
+            <div class="mt-6 text-center">
+                <a class="text-primary font-body-sm hover:underline flex items-center justify-center gap-1" href="{% url 'home' %}">
+                    <span class="material-symbols-outlined text-sm">help_outline</span>
+                    ¿Necesitas ayuda con tu perfil?
+                </a>
             </div>
         </div>
     </div>
-</div>
+</main>
 {% endblock %}

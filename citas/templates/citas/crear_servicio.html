@@ -1,18 +1,215 @@
 {% extends 'citas/base.html' %}
 
+{% block title %}Registrar Nuevo Servicio | Gestor de Citas{% endblock %}
+
+{% block legacy_css %}{% endblock %}
+
 {% block content %}
-<div class="container mt-5" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-    <h2 class="text-dark">Registrar Nuevo Servicio</h2>
-    <hr>
-    <form method="POST">
-        {% csrf_token %}
-        
-        <div class="mb-3">
-            {{ form.as_p }}
+<main class="flex-grow py-8 pb-20 px-4 md:px-gutter max-w-container-max mx-auto w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
+        <!-- Form Section -->
+        <div class="lg:col-span-5">
+            <div class="glass-card rounded-3xl p-8 sticky top-28 shadow-2xl">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">add_business</span>
+                    </div>
+                    <div>
+                        <h1 class="font-headline-lg text-headline-lg text-on-surface">Nuevo Servicio</h1>
+                        <p class="text-on-surface-variant text-body-sm">Configura los detalles de tu oferta</p>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="p-4 mb-4 text-sm text-error-container text-on-error-container rounded-xl bg-error-container/30 border border-error/20">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Nombre Field -->
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant px-1" for="{{ form.nombre.id_for_label }}">
+                            Nombre del Servicio
+                        </label>
+                        <input
+                            type="text"
+                            name="{{ form.nombre.name }}"
+                            id="{{ form.nombre.auto_id }}"
+                            value="{{ form.nombre.value|default:'' }}"
+                            class="w-full px-5 py-4 bg-white border {% if form.nombre.errors %}border-error focus:ring-error focus:border-error{% else %}border-outline-variant focus:ring-primary focus:border-primary{% endif %} rounded-xl focus:ring-2 transition-all text-body-md outline-none"
+                            placeholder="Ej. Limpieza Dental Premium"
+                            required
+                        />
+                        {% if form.nombre.errors %}
+                            <p class="text-error text-xs mt-1">{{ form.nombre.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Precio Field -->
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant px-1" for="{{ form.precio.id_for_label }}">
+                            Precio
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="{{ form.precio.name }}"
+                                id="{{ form.precio.auto_id }}"
+                                value="{{ form.precio.value|default:'' }}"
+                                class="w-full pl-10 pr-5 py-4 bg-white border {% if form.precio.errors %}border-error focus:ring-error focus:border-error{% else %}border-outline-variant focus:ring-primary focus:border-primary{% endif %} rounded-xl focus:ring-2 transition-all text-body-md outline-none"
+                                placeholder="0.00"
+                                required
+                            />
+                        </div>
+                        {% if form.precio.errors %}
+                            <p class="text-error text-xs mt-1">{{ form.precio.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Categoría Field -->
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant px-1" for="{{ form.categoria.id_for_label }}">
+                            Categoría
+                        </label>
+                        <div class="relative">
+                            <select
+                                name="{{ form.categoria.name }}"
+                                id="{{ form.categoria.auto_id }}"
+                                class="w-full px-5 py-4 bg-white border {% if form.categoria.errors %}border-error focus:ring-error focus:border-error{% else %}border-outline-variant focus:ring-primary focus:border-primary{% endif %} rounded-xl focus:ring-2 transition-all text-body-md outline-none appearance-none"
+                                required
+                            >
+                                {% for choice_val, choice_lbl in form.categoria.field.choices %}
+                                    <option value="{{ choice_val }}" {% if form.categoria.value == choice_val %}selected{% endif %}>{{ choice_lbl }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+                                keyboard_arrow_down
+                            </span>
+                        </div>
+                        {% if form.categoria.errors %}
+                            <p class="text-error text-xs mt-1">{{ form.categoria.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Imagen del Servicio -->
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant px-1">
+                            Imagen del Servicio <span class="text-xs font-normal opacity-60">(opcional)</span>
+                        </label>
+                        <div
+                            id="drop-zone"
+                            class="relative border-2 border-dashed border-outline-variant rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary transition-colors bg-surface-container-low/40 group"
+                            onclick="document.getElementById('id_imagen').click()"
+                        >
+                            <input type="file" name="imagen" id="id_imagen" accept="image/*" class="hidden" onchange="previewImage(event)" />
+                            <div id="drop-placeholder">
+                                <span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary transition-colors mb-2">add_photo_alternate</span>
+                                <p class="text-body-sm text-on-surface-variant">Haz clic o arrastra una imagen aquí</p>
+                                <p class="text-xs text-on-surface-variant/60 mt-1">JPG, PNG, WEBP — Máx. 5MB</p>
+                            </div>
+                            <img id="image-preview" src="" alt="Vista previa" class="hidden max-h-40 rounded-lg object-cover mt-2" />
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex flex-col gap-4">
+                        <button
+                            class="btn-gradient w-full py-4 rounded-2xl text-white font-label-bold text-label-bold shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                            type="submit">
+                            <span class="material-symbols-outlined">publish</span>
+                            Publicar ahora
+                        </button>
+                        <a
+                            href="{% url 'home' %}"
+                            class="w-full py-4 text-center rounded-2xl border border-outline-variant text-on-surface-variant font-label-bold text-label-bold hover:bg-surface-container-low transition-colors block"
+                        >
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-lg">Publicar ahora</button>
-        <a href="{% url 'home' %}" class="btn btn-link">Cancelar</a>
-    </form>
-</div>
-{% endblock content %}
+        <!-- List Section -->
+        <div class="lg:col-span-7">
+            <div class="mb-6 flex justify-between items-end">
+                <div>
+                    <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Servicios Publicados</h2>
+                    <p class="text-on-surface-variant text-body-sm">Gestiona tus servicios activos actualmente</p>
+                </div>
+            </div>
+
+            <!-- Bento Grid of Services -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+                {% for servicio in request.user.empresa.servicios.all %}
+                <!-- Service Card -->
+                <div class="bg-white rounded-3xl border border-outline-variant hover:shadow-xl transition-shadow group flex flex-col justify-between overflow-hidden min-h-[220px]">
+                    {% if servicio.imagen %}
+                    <div class="h-36 overflow-hidden">
+                        <img src="{{ servicio.imagen.url }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="{{ servicio.nombre }}" />
+                    </div>
+                    {% endif %}
+                    <div class="p-6 flex flex-col flex-1 justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                {% if not servicio.imagen %}
+                                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">
+                                        {% if servicio.categoria == 'urgencias' %}emergency
+                                        {% elif servicio.categoria == 'especializado' %}orthopedics
+                                        {% elif servicio.categoria == 'estetico' %}spa
+                                        {% else %}medical_services{% endif %}
+                                    </span>
+                                </div>
+                                {% endif %}
+                                <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ml-auto
+                                    {% if servicio.categoria == 'urgencias' %}bg-red-100 text-red-700
+                                    {% elif servicio.categoria == 'especializado' %}bg-amber-100 text-amber-700
+                                    {% elif servicio.categoria == 'estetico' %}bg-purple-100 text-purple-700
+                                    {% else %}bg-green-100 text-green-700{% endif %}">
+                                    {{ servicio.get_categoria_display }}
+                                </span>
+                            </div>
+                            <h3 class="font-headline-lg text-[20px] mb-1 group-hover:text-primary transition-colors line-clamp-1">
+                                {{ servicio.nombre }}
+                            </h3>
+                            <p class="text-on-surface-variant text-body-sm mb-4 line-clamp-2">Servicio activo en el catálogo de tu negocio.</p>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 border-t border-outline-variant/30">
+                            <span class="text-primary font-bold text-lg">${{ servicio.precio }}</span>
+                            <span class="text-xs text-on-surface-variant font-label-bold uppercase">Activo</span>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-2 border-2 border-dashed border-outline-variant rounded-3xl p-8 flex flex-col items-center justify-center text-center opacity-60 min-h-[220px]">
+                    <span class="material-symbols-outlined text-4xl mb-2 text-primary">add_circle</span>
+                    <p class="font-label-bold text-label-bold text-on-surface">No has publicado ningún servicio todavía.</p>
+                    <p class="text-on-surface-variant text-body-sm mt-1">Usa el formulario de la izquierda para registrar tu primer servicio.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const preview = document.getElementById('image-preview');
+        const placeholder = document.getElementById('drop-placeholder');
+        preview.src = e.target.result;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+    };
+    reader.readAsDataURL(file);
+}
+</script>
+{% endblock %}

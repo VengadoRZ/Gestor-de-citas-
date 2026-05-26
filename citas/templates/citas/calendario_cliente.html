@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Citas</title>
+    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
+</head>
+
+<body>
+    <!-- Navbar (puedes usar la misma que en home) -->
+    <nav class="navbar">
+        <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
+        <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
+        {% if user.is_authenticated %}
+        {% if user.tipo_perfil == 'empresa' %}
+        <a class="navbar-brand" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
+        {% else %}
+        <a class="navbar-brand" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
+        {% endif %}
+        <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar
+            sesión</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
+        {% endif %}
+    </nav>
+    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+        {% csrf_token %}
+    </form>
+
+    <!-- Mensajes (por si hay avisos) -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <main class="container">
+        <h2>Mis Citas</h2>
+
+        {% if citas %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Servicio</th>
+                    <th>Negocio</th>
+                    <th>Fecha y hora</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas %}
+                <tr>
+                    <td>{{ cita.servicio.nombre }}</td>
+                    <td>{{ cita.servicio.empresa.nombre_negocio }}</td>
+                    <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        {% if cita.estado %}
+                        <span
+                            class="badge {% if cita.estado == 'pendiente' %}bg-warning{% elif cita.estado == 'confirmada' %}bg-info{% elif cita.estado == 'cancelada' %}bg-danger{% elif cita.estado == 'completada' %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ cita.get_estado_display }}
+                        </span>
+                        {% else %}
+                        <span class="badge bg-secondary">Sin estado</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'agendar_cita' cita.servicio.id %}"
+                            class="btn btn-sm btn-outline-primary">Repetir</a>
+                        {% if cita.estado == 'pendiente' %}
+                        <a href="{% url 'cancelar_cita' cita.id %}" class="btn btn-sm btn-outline-danger">Cancelar</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <nav>
+            <ul class="pagination">
+                {% if citas.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; primera</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ citas.previous_page_number }}">anterior</a>
+                </li>
+                {% endif %}
+                <li class="page-item disabled"><span class="page-link">Página {{ citas.number }} de {{
+                        citas.paginator.num_pages }}</span></li>
+                {% if citas.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ citas.next_page_number }}">siguiente</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ citas.paginator.num_pages }}">última
+                        &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% else %}
+        <p>No tienes citas registradas.</p>
+        <a href="{% url 'catalogo_servicios' %}" class="btn btn-primary">Buscar servicios</a>
+        {% endif %}
+    </main>
+</body>
+
+</html>

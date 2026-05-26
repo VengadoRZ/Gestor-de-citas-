@@ -10,6 +10,7 @@ class Usuario(AbstractUser):
     tipo_perfil = models.CharField(max_length=10, choices=TIPO_USUARIO, default='cliente')
     email = models.EmailField(unique=True)
     is_email_verified = models.BooleanField(default=False)
+    foto = models.ImageField(upload_to='fotos_perfil/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.username} ({self.get_tipo_perfil_display()})"
@@ -32,18 +33,32 @@ class Cliente(models.Model):
         return f"{self.usuario.first_name} {self.usuario.last_name}"
 
 class Servicio(models.Model):
+    CATEGORIAS = (
+        ('general', 'General'),
+        ('especializado', 'Especializado'),
+        ('urgencias', 'Urgencias'),
+        ('estetico', 'Estético'),
+    )
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='servicios')
     nombre = models.CharField(max_length=100)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
+    categoria = models.CharField(max_length=50, choices=CATEGORIAS, default='general')
+    imagen = models.ImageField(upload_to='servicios/', null=True, blank=True)
 
     def __str__(self):
         return self.nombre
 
 class Cita(models.Model):
+    ESTADOS = (
+        ('pendiente', 'Pendiente'),
+        ('activa', 'Activa'),
+        ('finalizada', 'Finalizada'),
+    )
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
     fecha_hora = models.DateTimeField()
     pagado = models.BooleanField(default=False)
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
 
     def __str__(self):
         return f"Cita para {self.cliente} - {self.servicio} ({self.fecha_hora})"

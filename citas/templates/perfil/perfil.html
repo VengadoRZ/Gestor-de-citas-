@@ -1,115 +1,237 @@
- <!DOCTYPE html>
- <html lang="en">
- <head> 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
-    <link rel="stylesheet" href="{% static 'perfil/perfil.css' %}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
- </head>
- <body>
-    <header></header>
-    <nav class="navbar"> 
-                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-                <a class="navbar-brand" href="#">Citas</a>
-                <a class="navbar-brand" href="#">Empresas</a>
-                <a class="navbar-brand" href="{% url 'perfil' %}">perfil</a>
-                
-                  {% if user.is_authenticated %}
-                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-                    {% csrf_token %}
-                </form>
-                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
-                    {% else %}
-                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
-                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-                    
-                
-                
-                  {% endif %}
-        </nav>
-        <main class="container">
-    
- 
+{% extends 'citas/base.html' %}
+
+{% block title %}Mi Perfil | Gestor de Citas{% endblock %}
+
+{% block legacy_css %}{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-8">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white text-center">
-                <h2 class="mb-0">Mi Perfil</h2>
-            </div>
-            <div class="card-body p-4">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <p><strong>Usuario:</strong> {{ user.username }}</p>
-                        <p><strong>Email:</strong> {{ user.email }}</p>
-                        <p><strong>Tipo de Perfil:</strong> {{ user.get_tipo_perfil_display }}</p>
-                    </div>
-                </div>
-
-                <hr>
-
-                <form method="POST">
-                    {% csrf_token %}
-
-                    {% if user.tipo_perfil == 'cliente' %}
-                        {% if user.cliente %}
-                            <h5 class="mb-3 text-primary">Editar Información de Cliente</h5>
-                            <div class="mb-3">
-                                <label class="form-label">Cédula</label>
-                                <input type="text" name="cedula" class="form-control" value="{{ user.cliente.cedula }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Teléfono</label>
-                                <input type="text" name="telefono" class="form-control" value="{{ user.cliente.telefono }}">
-                            </div>
-                        {% else %}
-                            <div class="alert alert-warning">
-                                No has completado tu perfil de cliente. 
-                                <a href="{% url 'completar_perfil' %}" class="alert-link">Hazlo aquí</a>.
-                            </div>
-                        {% endif %}
-
-                    {% elif user.tipo_perfil == 'empresa' %}
-                        {% if user.empresa %}
-                            <h5 class="mb-3 text-success">Editar Información de Empresa</h5>
-                            <div class="mb-3">
-                                <label class="form-label">Nombre del Negocio</label>
-                                <input type="text" name="nombre_negocio" class="form-control" value="{{ user.empresa.nombre_negocio }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">NIT / RIF</label>
-                                <input type="text" name="nit_rif" class="form-control" value="{{ user.empresa.nit_rif }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Dirección</label>
-                                <textarea name="direccion" class="form-control" rows="3">{{ user.empresa.direccion }}</textarea>
-                            </div>
-                        {% else %}
-                            <div class="alert alert-warning">
-                                No has completado tu perfil de empresa.
-                                <a href="{% url 'completar_perfil' %}" class="alert-link">Hazlo aquí</a>.
-                            </div>
-                        {% endif %}
+<main class="max-w-container-max mx-auto px-gutter py-8 pb-stack-lg">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row items-center md:justify-between gap-6 mb-12">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+            <!-- Avatar with upload option -->
+            <div class="relative group">
+                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl ring-4 ring-primary-fixed bg-primary-container flex items-center justify-center">
+                    {% if user.foto %}
+                        <img src="{{ user.foto.url }}" class="w-full h-full object-cover" alt="Foto de perfil" id="avatar-preview" />
+                    {% else %}
+                        <span class="text-white text-4xl font-extrabold font-headline-xl" id="avatar-initials">
+                            {% if user.tipo_perfil == 'empresa' and user.empresa %}
+                                {{ user.empresa.nombre_negocio|slice:":2"|upper }}
+                            {% else %}
+                                {{ user.username|slice:":2"|upper }}
+                            {% endif %}
+                        </span>
+                        <img src="" alt="Foto de perfil" id="avatar-preview" class="hidden w-full h-full object-cover" />
                     {% endif %}
+                </div>
+                <!-- Upload overlay -->
+                <label for="foto-input"
+                    class="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                    <span class="material-symbols-outlined text-white text-2xl">photo_camera</span>
+                    <span class="text-white text-xs font-bold mt-1">Cambiar</span>
+                </label>
+            </div>
+            <div class="text-center md:text-left">
+                <h1 class="font-headline-lg text-headline-lg text-on-surface mb-1">
+                    {% if user.tipo_perfil == 'empresa' and user.empresa %}
+                        {{ user.empresa.nombre_negocio }}
+                    {% else %}
+                        {{ user.get_full_name|default:user.username }}
+                    {% endif %}
+                </h1>
+                <p class="text-on-surface-variant font-body-sm flex items-center justify-center md:justify-start gap-2">
+                    <span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+                    {% if user.tipo_perfil == 'empresa' %}Empresa de Servicios{% else %}Cliente Registrado{% endif %}
+                </p>
+            </div>
+        </div>
+        <a href="{% url 'home' %}" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-all font-label-bold text-label-bold group">
+            <span class="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>
+            Volver al Inicio
+        </a>
+    </div>
 
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="{% url 'home' %}" class="boton">Volver</a>
-                        {% if user.cliente or user.empresa %}
-                            <button type="submit" class="boton">Guardar Cambios</button>
-                        {% endif %}
-                    </div>
-                </form>
+    {% if user.tipo_perfil == 'cliente' and not user.cliente or user.tipo_perfil == 'empresa' and not user.empresa %}
+    <!-- Warning: Profile Incomplete -->
+    <div class="max-w-2xl mx-auto mt-8">
+        <div class="p-6 bg-amber-50 border border-amber-200 rounded-3xl flex items-start gap-4 shadow-sm">
+            <span class="material-symbols-outlined text-amber-600 text-3xl">warning</span>
+            <div>
+                <h3 class="font-headline-lg text-lg text-amber-800 mb-1">Perfil incompleto</h3>
+                <p class="text-amber-700 text-body-sm mb-4">No has completado tu información de {% if user.tipo_perfil == 'cliente' %}cliente{% else %}empresa{% endif %}. Es necesario completarla para utilizar todas las funciones del sistema.</p>
+                <a href="{% url 'completar_perfil' %}" class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white font-label-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-sm">
+                    <span class="material-symbols-outlined text-sm">edit_note</span>
+                    Completar mi perfil ahora
+                </a>
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
-</main>
-        <footer></footer>
+    {% else %}
+    <!-- Settings Grid -->
+    <form method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {% csrf_token %}
+        <!-- Hidden file input for avatar -->
+        <input type="file" id="foto-input" name="foto" accept="image/*" class="hidden" onchange="previewAvatar(event)" />
 
-    
- </body>
- </html>
+        <!-- Information Column -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="glass-card rounded-[1.5rem] p-8">
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="material-symbols-outlined text-primary">person_outline</span>
+                    <h2 class="font-headline-lg text-[24px] text-on-surface">Información de Cuenta</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1">Nombre de Usuario</label>
+                        <input
+                            class="w-full p-4 bg-surface-container-low border border-outline-variant rounded-xl text-on-surface-variant font-body-md cursor-not-allowed opacity-80 outline-none"
+                            type="text" value="{{ user.username }}" readonly />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1">Correo Electrónico</label>
+                        <input
+                            class="w-full p-4 bg-surface-container-low border border-outline-variant rounded-xl text-on-surface-variant font-body-md cursor-not-allowed opacity-80 outline-none"
+                            type="email" value="{{ user.email }}" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-[1.5rem] p-8">
+                {% if user.tipo_perfil == 'cliente' %}
+                <!-- Cliente Form Fields -->
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="material-symbols-outlined text-primary">badge</span>
+                    <h2 class="font-headline-lg text-[24px] text-on-surface">Información de Cliente</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="cedula">Cédula</label>
+                        <input
+                            id="cedula"
+                            name="cedula"
+                            class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                            type="text" value="{{ user.cliente.cedula }}" placeholder="Ej: 12345678" required />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="telefono">Teléfono</label>
+                        <input
+                            id="telefono"
+                            name="telefono"
+                            class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                            type="text" value="{{ user.cliente.telefono }}" placeholder="Ej: 04141234567" required />
+                    </div>
+                </div>
+                {% else %}
+                <!-- Empresa Form Fields -->
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="material-symbols-outlined text-primary">business_center</span>
+                    <h2 class="font-headline-lg text-[24px] text-on-surface">Información General de la Empresa</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="nombre_negocio">Nombre del Negocio</label>
+                        <input
+                            id="nombre_negocio"
+                            name="nombre_negocio"
+                            class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                            type="text" value="{{ user.empresa.nombre_negocio }}" placeholder="Ej: Mi Empresa S.A." required />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="nit_rif">NIT / RIF</label>
+                        <input
+                            id="nit_rif"
+                            name="nit_rif"
+                            class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                            type="text" value="{{ user.empresa.nit_rif }}" placeholder="Ej: J-12345678-9" required />
+                    </div>
+                    <div class="space-y-2 md:col-span-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="direccion">Dirección Física</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">location_on</span>
+                            <input
+                                id="direccion"
+                                name="direccion"
+                                class="w-full p-4 pl-12 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                                type="text" value="{{ user.empresa.direccion }}" placeholder="Ej: Calle Principal..." required />
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sidebar Actions Column -->
+        <div class="space-y-8">
+            <!-- Photo Upload Card -->
+            <div class="glass-card rounded-[1.5rem] p-6">
+                <h3 class="font-label-bold text-label-bold text-primary mb-4 uppercase tracking-wider">Foto de Perfil</h3>
+                <label for="foto-input"
+                    class="w-full flex flex-col items-center gap-3 p-5 border-2 border-dashed border-outline-variant rounded-2xl cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group">
+                    <span class="material-symbols-outlined text-3xl text-on-surface-variant group-hover:text-primary transition-colors">add_photo_alternate</span>
+                    <div class="text-center">
+                        <p class="font-label-bold text-sm text-on-surface">Subir nueva foto</p>
+                        <p class="text-xs text-on-surface-variant mt-0.5">JPG, PNG, WEBP</p>
+                    </div>
+                </label>
+                <p id="foto-name" class="text-xs text-on-surface-variant mt-3 text-center truncate hidden"></p>
+            </div>
+
+            <!-- Status Card -->
+            <div class="glass-card rounded-[1.5rem] p-8 border-primary/20">
+                <h3 class="font-label-bold text-label-bold text-primary mb-6 uppercase tracking-wider">Estado del Perfil</h3>
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-on-surface-variant font-body-sm">Tipo de Perfil</span>
+                        <span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[12px] font-bold uppercase">{{ user.get_tipo_perfil_display }}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-on-surface-variant font-body-sm">Estado</span>
+                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[12px] font-bold">ACTIVO</span>
+                    </div>
+                </div>
+                <hr class="my-8 border-outline-variant/30" />
+                <button
+                    type="submit"
+                    class="w-full btn-gradient py-4 text-white rounded-full font-label-bold text-label-bold flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined">save</span>
+                    Guardar Cambios
+                </button>
+                <a
+                    href="{% url 'home' %}"
+                    class="w-full mt-4 py-4 text-center bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors rounded-full font-label-bold text-label-bold block">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+</main>
+
+<script>
+function previewAvatar(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Show file name
+    const nameEl = document.getElementById('foto-name');
+    if (nameEl) {
+        nameEl.textContent = file.name;
+        nameEl.classList.remove('hidden');
+    }
+
+    // Show preview in avatar circle
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const preview = document.getElementById('avatar-preview');
+        const initials = document.getElementById('avatar-initials');
+        if (preview) {
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
+        }
+        if (initials) initials.classList.add('hidden');
+    };
+    reader.readAsDataURL(file);
+}
+</script>
+{% endblock %}

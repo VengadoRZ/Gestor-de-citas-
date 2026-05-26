@@ -28,8 +28,9 @@ class CustomUserCreationForm(UserCreationForm):
 class ServicioForm(forms.ModelForm):
     class Meta:
         model = Servicio
-        fields = ['nombre', 'precio']
+        fields = ['nombre', 'precio', 'categoria', 'imagen']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Limpieza Dental'}),
             'precio': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '0.00'}),
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
         }

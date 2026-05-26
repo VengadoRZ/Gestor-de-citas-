@@ -1,70 +1,76 @@
-  {% load static %}
-    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
- 
- <nav class="navbar"> 
-                <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-                <a class="navbar-brand" href="#">Citas</a>
-                <a class="navbar-brand" href="#">Empresas</a>
-                <a class="navbar-brand" href="{% url 'perfil' %}">perfil</a>
-                
-                  {% if user.is_authenticated %}
-                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-                    {% csrf_token %}
-                </form>
-                <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand">Cerrar Sesión</a>
-                    {% else %}
-                    <a href="{% url 'register' %}" class="navbar-brand">Registrar</a>
-                    <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-                    
-                
-                
-                  {% endif %}
-        </nav>
-        <main class="container">
+{% extends 'citas/base.html' %}
 
+{% block title %}¿Cómo quieres usar Gestor de Citas?{% endblock %}
+
+{% block legacy_css %}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 text-center">
-            <h1 class="mb-4">¡Bienvenido! Solo un paso más</h1>
-            <p class="lead text-muted">¿Cómo deseas utilizar nuestra plataforma de citas?</p>
-            
-            <hr class="my-4">
-
-            <form method="POST" class="d-flex justify-content-center gap-4">
-                {% csrf_token %}
-                
-                <div class="card">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-primary">Soy Cliente</h5>
-                        <p class="card-text">Quiero buscar servicios, ver disponibilidad y agendar mis citas de forma rápida.</p>
-                        <button type="submit" name="tipo_perfil" value="cliente" class="btn btn-primary mt-auto">
-                            Elegir Cliente
-                        </button>
-                    </div>
-                </div>
-                <br>
-                <div class="card">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-success">Soy Empresa</h5>
-                        <p class="card-text">Quiero registrar mi negocio, ofrecer servicios y gestionar las citas de mis clientes.</p>
-                        <button type="submit" name="tipo_perfil" value="empresa" class="btn btn-success mt-auto">
-                            Elegir Empresa
-                        </button>
-                    </div>
-                </div>
-
-            </form>
+<main class="flex-grow flex items-center justify-center py-stack-lg px-4">
+    <div class="max-w-container-max w-full mx-auto">
+        <div class="text-center mb-12">
+            <h1 class="font-headline-xl text-headline-xl mb-4 text-on-surface">Bienvenido al futuro de la gestión</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Selecciona el tipo de cuenta que mejor se adapte a tus necesidades. Personaliza tu experiencia desde el primer momento.</p>
         </div>
-    </div>
-</div>
-{% endblock %}
-        </main>
-        <footer></footer>
 
-    
- </body>
- </html>
+        <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-gutter max-w-5xl mx-auto">
+            {% csrf_token %}
+
+            <!-- Soy Cliente Card -->
+            <div class="glass-card rounded-[2rem] p-8 flex flex-col items-center text-center group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"
+                 onclick="this.querySelector('button').click()">
+                <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform duration-500">
+                    <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">person</span>
+                </div>
+                <h2 class="font-headline-lg text-headline-lg mb-4 text-on-surface">Soy Cliente</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mb-8 px-4">Reserva citas en segundos, gestiona tus recordatorios y mantén un historial completo de tus servicios favoritos.</p>
+                <ul class="space-y-4 mb-10 text-left w-full max-w-[280px]">
+                    <li class="flex items-center gap-3 font-body-sm text-on-surface">
+                        <span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                        Reservas instantáneas 24/7
+                    </li>
+                    <li class="flex items-center gap-3 font-body-sm text-on-surface">
+                        <span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                        Notificaciones inteligentes
+                    </li>
+                    <li class="flex items-center gap-3 font-body-sm text-on-surface">
+                        <span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                        Historial de citas y facturas
+                    </li>
+                </ul>
+                <button type="submit" name="tipo_perfil" value="cliente"
+                    class="w-full btn-gradient text-white py-4 rounded-full font-label-bold text-label-bold shadow-lg hover:shadow-primary/30 transition-all cursor-pointer">
+                    CONTINUAR COMO CLIENTE
+                </button>
+            </div>
+
+            <!-- Soy Empresa Card -->
+            <div class="glass-card rounded-[2rem] p-8 flex flex-col items-center text-center group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"
+                 onclick="this.querySelector('button').click()">
+                <div class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mb-6 text-secondary group-hover:scale-110 transition-transform duration-500">
+                    <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">business</span>
+                </div>
+                <h2 class="font-headline-lg text-headline-lg mb-4 text-on-surface">Soy Empresa</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mb-8 px-4">Automatiza tu agenda, reduce inasistencias y obtén métricas detalladas para hacer crecer tu negocio.</p>
+                <ul class="space-y-4 mb-10 text-left w-full max-w-[280px]">
+                    <li class="flex items-center gap-3 font-body-sm text-on-surface">
+                        <span class="material-symbols-outlined text-secondary text-xl">check_circle</span>
+                        Panel de control avanzado
+                    </li>
+                    <li class="flex items-center gap-3 font-body-sm text-on-surface">
+                        <span class="material-symbols-outlined text-secondary text-xl">check_circle</span>
+                        Gestión de personal y servicios
+                    </li>
+                    <li class="flex items-center gap-3 font-body-sm text-on-surface">
+                        <span class="material-symbols-outlined text-secondary text-xl">check_circle</span>
+                        Métricas de rendimiento real
+                    </li>
+                </ul>
+                <button type="submit" name="tipo_perfil" value="empresa"
+                    class="w-full btn-gradient text-white py-4 rounded-full font-label-bold text-label-bold shadow-lg hover:shadow-primary/30 transition-all cursor-pointer">
+                    REGISTRAR MI EMPRESA
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}

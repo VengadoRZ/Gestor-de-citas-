@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="light" lang="es" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;family=Hanken+Grotesk:wght@700&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "secondary": "#8127cf",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-background": "#1b1b23",
+                        "inverse-primary": "#c0c1ff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-container-highest": "#e4e1ed",
+                        "primary": "#4648d4",
+                        "surface-container-low": "#f5f2fe",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "inverse-surface": "#303038",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#9c48ea",
+                        "inverse-on-surface": "#f2effb",
+                        "secondary-fixed": "#f0dbff",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e4e1ed",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dbd8e4",
+                        "on-surface": "#1b1b23",
+                        "glass-fill": "rgba(255, 255, 255, 0.7)",
+                        "on-tertiary-container": "#fffbff",
+                        "deep-indigo": "#4338CA",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "on-surface-variant": "#464554",
+                        "tertiary": "#904900",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c7c4d7",
+                        "primary-fixed": "#e1e0ff",
+                        "outline": "#767586",
+                        "tertiary-fixed": "#ffdcc5",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "surface-bright": "#fcf8ff",
+                        "surface-container": "#efecf8",
+                        "tertiary-container": "#b55d00",
+                        "on-primary-fixed": "#07006c",
+                        "on-primary-container": "#fffbff",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "surface-tint": "#494bd6",
+                        "background": "#fcf8ff",
+                        "surface-container-high": "#e9e6f3",
+                        "error-container": "#ffdad6",
+                        "glass-border": "rgba(255, 255, 255, 0.4)",
+                        "on-secondary-container": "#fffbff",
+                        "electric-violet": "#7E22CE",
+                        "surface": "#fcf8ff",
+                        "primary-container": "#6063ee",
+                        "bg-canvas": "#F8FAFC"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-bold": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.25", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #4648d4 0%, #8127cf 100%);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(70, 72, 212, 0.4);
+        }
+
+        .active-filter {
+            background: #4648d4;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-canvas font-body-md text-on-background min-h-screen">
+    <!-- TopNavBar -->
+    <header class="sticky top-4 z-50 max-w-container-max mx-auto px-margin-mobile md:px-0">
+        <nav
+            class="bg-glass-fill backdrop-blur-xl border border-glass-border rounded-full flex justify-between items-center px-8 py-3 shadow-md">
+            <div class="font-headline-lg text-on-surface font-bold tracking-tight">Gestor de Citas</div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-primary font-bold border-b-2 border-primary pb-1 hover:text-primary transition-all duration-300"
+                    href="#">Inicio</a>
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300"
+                    href="#">Iniciar Sesión</a>
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300"
+                    href="#">Registro</a>
+            </div>
+            <button class="md:hidden p-2 scale-95 active:scale-90 transition-transform">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </nav>
+    </header>
+    <main class="max-w-container-max mx-auto px-gutter py-stack-lg">
+        <!-- Search Section -->
+        <section
+            class="relative mb-stack-lg overflow-hidden rounded-3xl min-h-[400px] flex items-center justify-center">
+
+            <div class="relative z-10 w-full max-w-2xl px-margin-mobile text-center md:text-left md:ml-12">
+                <h1 class="font-headline-xl text-headline-xl mb-stack-sm text-on-background">Encuentra el servicio
+                    perfecto</h1>
+                <p class="text-body-md text-on-surface-variant mb-stack-md max-w-lg">Reserva citas con los mejores
+                    profesionales en salud, tecnología y bienestar en un solo clic.</p>
+                <div class="glass-card p-2 rounded-full flex items-center shadow-lg w-full">
+                    <span class="material-symbols-outlined text-outline px-4">search</span>
+                    <input
+                        class="w-full bg-transparent border-none focus:ring-0 text-body-md py-3 placeholder:text-outline-variant"
+                        placeholder="¿Qué servicio buscas hoy?" type="text">
+                    <button
+                        class="btn-gradient text-white px-8 py-3 rounded-full font-label-bold hidden md:block">Buscar</button>
+                </div>
+            </div>
+        </section>
+        <!-- Filters Section -->
+        <section class="mb-stack-lg">
+            <div class="flex items-center justify-between mb-stack-md">
+                <h2 class="font-headline-lg text-headline-lg">Categorías</h2>
+                <a class="text-primary font-label-bold flex items-center gap-1 hover:underline" href="#">
+                    Ver todas <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                </a>
+            </div>
+            <div class="flex gap-stack-md overflow-x-auto pb-4 no-scrollbar">
+                <button
+                    class="active-filter px-6 py-2 rounded-full font-label-bold whitespace-nowrap transition-colors border border-outline-variant">Todos</button>
+                <button
+                    class="bg-white hover:bg-surface-container px-6 py-2 rounded-full font-label-bold whitespace-nowrap transition-colors border border-outline-variant text-on-surface-variant flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">medical_services</span> Salud
+                </button>
+                <button
+                    class="bg-white hover:bg-surface-container px-6 py-2 rounded-full font-label-bold whitespace-nowrap transition-colors border border-outline-variant text-on-surface-variant flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">spa</span> Bienestar
+                </button>
+                <button
+                    class="bg-white hover:bg-surface-container px-6 py-2 rounded-full font-label-bold whitespace-nowrap transition-colors border border-outline-variant text-on-surface-variant flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">devices</span> Tecnología
+                </button>
+                <button
+                    class="bg-white hover:bg-surface-container px-6 py-2 rounded-full font-label-bold whitespace-nowrap transition-colors border border-outline-variant text-on-surface-variant flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">fitness_center</span> Deporte
+                </button>
+                <button
+                    class="bg-white hover:bg-surface-container px-6 py-2 rounded-full font-label-bold whitespace-nowrap transition-colors border border-outline-variant text-on-surface-variant flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">palette</span> Creatividad
+                </button>
+            </div>
+        </section>
+        <!-- Service Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+            <!-- Card 1 -->
+            <article
+                class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                <div class="h-48 overflow-hidden relative">
+                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        data-alt="A professional dental clinic setting with high-end medical equipment, bright clinical lighting, and a serene atmosphere. The color palette is clean with sterile whites and calming indigo accents. A soft-focus patient chair is in the center, embodying a sense of modern healthcare and professional efficiency."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDZeXqu4Zv5mll0T1WpIlOFPTh8kzW9YNaYTwZJAs_JKWIPZumbwywbcm0rgRlu7QPktMPjDem7gIIWzj9yO0e6qWmJyL_emuDoi8ilWAyXYLjAuPs6JMxhtFcphvQBXT2CcKQd-iCFthYHRdQmBjNREInyHGL1kd_izxi8Ejfs8WmpXGm7oY6nJjm0WZ09bwTag4PkP82FdLd4ht5moWwigcQ4Kf59-Q8Zh9CpXzwff8kIpWY3JujkLcotm1eGEjqNzqdA1lGyYdj">
+                    <div class="absolute top-3 right-3">
+                        <span
+                            class="bg-primary-container text-white text-[12px] px-3 py-1 rounded-full font-label-bold">Salud</span>
+                    </div>
+                </div>
+                <div class="p-stack-md">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-headline-lg text-body-md font-bold text-on-surface">Consulta Dental General</h3>
+                        <div class="flex items-center text-tertiary">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                            <span class="text-body-sm font-label-bold ml-1">4.9</span>
+                        </div>
+                    </div>
+                    <p class="text-body-sm text-on-surface-variant mb-stack-md">Clínica Dental Innova</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-primary font-bold text-headline-lg">$45</span>
+                            <span class="text-outline text-body-sm">/sesión</span>
+                        </div>
+                        <button
+                            class="btn-gradient text-white px-5 py-2 rounded-xl font-label-bold text-body-sm">Agendar
+                            Cita</button>
+                    </div>
+                </div>
+            </article>
+            <!-- Card 2 -->
+            <article
+                class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                <div class="h-48 overflow-hidden relative">
+                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        data-alt="A tranquil yoga studio with warm, diffused sunlight filtering through linen curtains. The flooring is natural wood, and several rolled yoga mats sit in the corner. The aesthetic is minimalist and zen, with a primary palette of earthy tones and violet accents, creating a feeling of ultimate wellness and relaxation."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiL-nEnDEzWPUmgb-EoBek3COe5qmhsPSd-bhBem4PFGieoOUdqXeT_Ed0ZalYKizDU3JBWF3UvqTRokuLLeidKt-lkUUtmegjc9NuYomZiqcAKWPtLZNMht5IRUwIKjXjjcVESkRwv6B04kgm7d37Iw5ZAR_diOxPWpqVhZ3jZUw5VL8KAJ1c3ONDkzvIpppkSAoZwQZCrKM9S50fnFJXzqHZinXTuIqCMlIweazfXdHzDGar6ziMBR7MM9J20gseY0SAU2HdFz5n">
+                    <div class="absolute top-3 right-3">
+                        <span
+                            class="bg-secondary-container text-white text-[12px] px-3 py-1 rounded-full font-label-bold">Bienestar</span>
+                    </div>
+                </div>
+                <div class="p-stack-md">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-headline-lg text-body-md font-bold text-on-surface">Sesión de Yoga Privada</h3>
+                        <div class="flex items-center text-tertiary">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                            <span class="text-body-sm font-label-bold ml-1">4.8</span>
+                        </div>
+                    </div>
+                    <p class="text-body-sm text-on-surface-variant mb-stack-md">Zen Wellness Studio</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-primary font-bold text-headline-lg">$30</span>
+                            <span class="text-outline text-body-sm">/hora</span>
+                        </div>
+                        <button
+                            class="btn-gradient text-white px-5 py-2 rounded-xl font-label-bold text-body-sm">Agendar
+                            Cita</button>
+                    </div>
+                </div>
+            </article>
+            <!-- Card 3 -->
+            <article
+                class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                <div class="h-48 overflow-hidden relative">
+                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        data-alt="A modern tech workspace featuring high-resolution monitors and clean cable management. The lighting is cool-toned and futuristic, with subtle violet neon glows. The environment is impeccably organized, reflecting a sophisticated corporate SaaS aesthetic. Deep blues and whites dominate the scene."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJG0hFL6vM52zuIeJu2wna39KuFewzqbHD-lv11bp_ycFxAgC_7fliKno29xT8xn5MwloEsl2owndyydVkGmLH4iXVrjh90mnV9DjwgcVZS3SnRZmopxZ2DJk_YJ9I2nURExNlwd2fDwJ_CppvHVXYQhRUxeUWP43hTfbgWVUOVRAk1Kahj6Qw6fZO-DHXLlJQySnVmYVP3vuMHokGpQk5m48QfkajhdFBvD6PWbEIokCIl0bZQ2d7F6hGPotiBhu_r3ILKVpleAoe">
+                    <div class="absolute top-3 right-3">
+                        <span
+                            class="bg-tertiary-container text-white text-[12px] px-3 py-1 rounded-full font-label-bold">Tecnología</span>
+                    </div>
+                </div>
+                <div class="p-stack-md">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-headline-lg text-body-md font-bold text-on-surface">Soporte Técnico Senior</h3>
+                        <div class="flex items-center text-tertiary">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                            <span class="text-body-sm font-label-bold ml-1">5.0</span>
+                        </div>
+                    </div>
+                    <p class="text-body-sm text-on-surface-variant mb-stack-md">TechSolutions Pro</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-primary font-bold text-headline-lg">$60</span>
+                            <span class="text-outline text-body-sm">/hora</span>
+                        </div>
+                        <button
+                            class="btn-gradient text-white px-5 py-2 rounded-xl font-label-bold text-body-sm">Agendar
+                            Cita</button>
+                    </div>
+                </div>
+            </article>
+            <!-- Card 4 -->
+            <article
+                class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                <div class="h-48 overflow-hidden relative">
+                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        data-alt="A bright and airy corporate meeting room with floor-to-ceiling windows and a sleek minimalist conference table. The mood is professional and energetic. Soft afternoon light fills the space, highlighting the high-quality furniture and advanced presentation screens. Corporate modernism at its finest."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuByDodIiLGlH1dSUqkRSNlt0jnZE_ndiAwWMTkQpxgwEUa7a58d-8a5FvaULY7aF6v8PpWQmZ7nwlqMGSZq8DPDAAp_VWdNZKPRwRGkCUT_HLxOWdkhuY4LHEIoZgE3sazHxW4KEOSheX4eZ-S7ayhtPit-LPESULEdRrw0wdQaySTIxHKex7n9nLIHue7zM7lG0vKU3abUFPVof7nNaL7T_Mw1mZGm-TRPNVbnU6magoIld2JSd3vR9zxsjmuRhZUoLxTkfa_BXvYM">
+                    <div class="absolute top-3 right-3">
+                        <span
+                            class="bg-on-tertiary-fixed-variant text-white text-[12px] px-3 py-1 rounded-full font-label-bold">Asesoría</span>
+                    </div>
+                </div>
+                <div class="p-stack-md">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-headline-lg text-body-md font-bold text-on-surface">Consultoría de Negocio</h3>
+                        <div class="flex items-center text-tertiary">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                            <span class="text-body-sm font-label-bold ml-1">4.7</span>
+                        </div>
+                    </div>
+                    <p class="text-body-sm text-on-surface-variant mb-stack-md">Growth Partners</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-primary font-bold text-headline-lg">$120</span>
+                            <span class="text-outline text-body-sm">/sesión</span>
+                        </div>
+                        <button
+                            class="btn-gradient text-white px-5 py-2 rounded-xl font-label-bold text-body-sm">Agendar
+                            Cita</button>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <!-- CTA Section -->
+
+    </main>
+    <!-- Footer -->
+    <footer
+        class="w-full py-stack-lg px-gutter mt-stack-lg flex flex-col md:flex-row justify-between items-start max-w-container-max mx-auto bg-glass-fill backdrop-blur-lg border-t border-glass-border rounded-t-3xl shadow-lg">
+        <div class="mb-stack-md md:mb-0">
+            <div class="font-headline-lg text-on-surface font-bold mb-2">Gestor de Citas</div>
+            <p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs">© 2024 Gestor de Citas. Innovación y
+                eficiencia en cada cita.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 w-full md:w-auto">
+            <div class="flex flex-col gap-2">
+                <span class="font-label-bold text-primary">Empresa</span>
+                <a class="text-on-surface-variant text-body-sm hover:text-primary transition-colors" href="#">Sobre
+                    nosotros</a>
+                <a class="text-on-surface-variant text-body-sm hover:text-primary transition-colors"
+                    href="#">Carreras</a>
+            </div>
+            <div class="flex flex-col gap-2">
+                <span class="font-label-bold text-primary">Servicios</span>
+                <a class="text-on-surface-variant text-body-sm hover:text-primary transition-colors"
+                    href="#">Buscador</a>
+                <a class="text-on-surface-variant text-body-sm hover:text-primary transition-colors"
+                    href="#">Empresas</a>
+            </div>
+            <div class="flex flex-col gap-2">
+                <span class="font-label-bold text-primary">Legal</span>
+                <a class="text-on-surface-variant text-body-sm hover:text-primary transition-colors"
+                    href="#">Privacidad</a>
+                <a class="text-on-surface-variant text-body-sm hover:text-primary transition-colors"
+                    href="#">Términos</a>
+            </div>
+            <div class="flex flex-col gap-2">
+                <span class="font-label-bold text-primary">Síguenos</span>
+                <div class="flex gap-4">
+                    <span
+                        class="material-symbols-outlined opacity-80 hover:opacity-100 cursor-pointer text-primary">public</span>
+                    <span
+                        class="material-symbols-outlined opacity-80 hover:opacity-100 cursor-pointer text-primary">share</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Micro-interactions for buttons and filters
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (this.classList.contains('whitespace-nowrap')) {
+                    document.querySelectorAll('.whitespace-nowrap').forEach(b => b.classList.remove('active-filter'));
+                    this.classList.add('active-filter');
+                }
+            });
+        });
+    </script>
+</body>

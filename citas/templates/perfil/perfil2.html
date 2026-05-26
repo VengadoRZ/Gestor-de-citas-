@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>CitaManager - Perfil de Empresa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Inter:wght@400;500&amp;family=Hanken+Grotesk:wght@700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "outline-variant": "#c7c4d7",
+                        "on-secondary-container": "#fffbff",
+                        "error-container": "#ffdad6",
+                        "deep-indigo": "#4338CA",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary-fixed": "#f0dbff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "secondary-container": "#9c48ea",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#c0c1ff",
+                        "surface-container-highest": "#e4e1ed",
+                        "on-error": "#ffffff",
+                        "background": "#fcf8ff",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "surface-variant": "#e4e1ed",
+                        "inverse-surface": "#303038",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-surface": "#1b1b23",
+                        "on-primary-fixed": "#07006c",
+                        "glass-border": "rgba(255, 255, 255, 0.4)",
+                        "tertiary-container": "#b55d00",
+                        "primary-container": "#6063ee",
+                        "primary": "#4648d4",
+                        "tertiary-fixed": "#ffdcc5",
+                        "surface-container-low": "#f5f2fe",
+                        "surface-tint": "#494bd6",
+                        "surface-bright": "#fcf8ff",
+                        "on-background": "#1b1b23",
+                        "surface": "#fcf8ff",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "glass-fill": "rgba(255, 255, 255, 0.7)",
+                        "surface-container": "#efecf8",
+                        "on-primary-container": "#fffbff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "electric-violet": "#7E22CE",
+                        "bg-canvas": "#F8FAFC",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#464554",
+                        "inverse-on-surface": "#f2effb",
+                        "surface-container-high": "#e9e6f3",
+                        "on-primary": "#ffffff",
+                        "outline": "#767586",
+                        "primary-fixed": "#e1e0ff",
+                        "secondary": "#8127cf",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-dim": "#dbd8e4",
+                        "tertiary": "#904900",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "stack-sm": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "label-bold": ["Hanken Grotesk"],
+                        "headline-xl": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.25", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F8FAFC;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(70, 72, 212, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(129, 39, 207, 0.05) 0px, transparent 50%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #4648d4 0%, #8127cf 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(70, 72, 212, 0.3);
+        }
+
+        .input-focus:focus {
+            outline: none;
+            border-color: #4648d4;
+            box-shadow: 0 0 0 4px rgba(70, 72, 212, 0.1);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body class="font-body-md text-on-surface selection:bg-primary-fixed">
+    <!-- TopNavBar (Updated from SCREEN_20) -->
+    <header class="fixed top-4 left-0 right-0 z-50 px-margin-mobile md:px-gutter">
+        <nav
+            class="flex justify-between items-center px-8 py-3 max-w-container-max mx-auto bg-glass-fill backdrop-blur-xl border border-glass-border rounded-full shadow-md">
+            <div class="font-headline-lg text-on-surface font-bold tracking-tight">Gestor de Citas</div>
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300"
+                    href="#">Inicio</a>
+                <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md transition-all duration-300"
+                    href="#">Perfil</a>
+                <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300"
+                    href="#">Citas</a>
+            </div>
+            <!-- Mobile Menu Icon (Placeholder) -->
+            <div class="md:hidden">
+                <span class="material-symbols-outlined text-primary">menu</span>
+            </div>
+        </nav>
+    </header>
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 px-gutter max-w-container-max mx-auto">
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row items-center md:justify-between gap-6 mb-12">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <div class="relative group">
+                    <div
+                        class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl ring-4 ring-primary-fixed">
+                        <img alt="Logo de la Empresa" class="w-full h-full object-cover"
+                            data-alt="A sophisticated corporate logo of a tech-forward company displayed as a profile picture. The visual style is modern and clean with a focus on glassmorphism elements and soft lighting. The background features subtle gradients of indigo and violet, matching the brand identity of an efficient SaaS management tool. High-resolution textures convey professional quality and reliability."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdcsf5dZu0Z_AWPXel8epe8Y2Tp8SNe4g9rS5LMhZ8C27F2jJ8dpEcgBIpBvFoTI0s1iGR3xfyM1ZVN5rrog_phzMwwPk2jcRLHr4VzDl9cxyKIeoUIAIJWTS2UFD4_oPIFC9bdm2PLZO8tfhgArY4BJPOXCKZLCW0djzY4IQZGkY5TbSRSOBlPbHiq0i5huHgHdqhmJBemJrH6flVyTyPMAgD9Yd0ij-1ZMD5aya-A4LlFCc_xQu1HRSKPLGbPaUAFajkaxQKyi-v" />
+                    </div>
+                    <button
+                        class="absolute bottom-1 right-1 bg-primary text-white p-2 rounded-full shadow-lg hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                    </button>
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-1">TechSolutions Global S.A.S</h1>
+                    <p
+                        class="text-on-surface-variant font-body-sm flex items-center justify-center md:justify-start gap-2">
+                        <span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+                        Empresa de Servicios Tecnológicos
+                    </p>
+                </div>
+            </div>
+            <button
+                class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-all font-label-bold text-label-bold group"
+                onclick="history.back()">
+                <span
+                    class="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>
+                Volver al Panel
+            </button>
+        </div>
+        <!-- Settings Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Information Column -->
+            <div class="lg:col-span-2 space-y-8">
+                <div class="glass-card rounded-[1.5rem] p-8">
+                    <div class="flex items-center gap-3 mb-8">
+                        <span class="material-symbols-outlined text-primary">business_center</span>
+                        <h2 class="font-headline-lg text-[24px] text-on-surface">Información General</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="font-label-bold text-label-bold text-on-surface-variant ml-1">Nombre del
+                                Negocio</label>
+                            <input
+                                class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                                placeholder="Ej: Mi Empresa S.A." type="text" value="TechSolutions Global S.A.S" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="font-label-bold text-label-bold text-on-surface-variant ml-1">NIT /
+                                RIF</label>
+                            <input
+                                class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                                placeholder="Ej: J-00000000-0" type="text" value="J-12345678-9" />
+                        </div>
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="font-label-bold text-label-bold text-on-surface-variant ml-1">Email de
+                                Contacto Corporativo</label>
+                            <input
+                                class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                                placeholder="empresa@correo.com" type="email" value="contacto@techsolutions.com" />
+                        </div>
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="font-label-bold text-label-bold text-on-surface-variant ml-1">Dirección
+                                Física</label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">location_on</span>
+                                <input
+                                    class="w-full p-4 pl-12 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                                    type="text"
+                                    value="Av. Tecnológica, Edificio Innova, Nivel 4, Oficina 402. Madrid, España." />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-[1.5rem] p-8">
+                    <div class="flex items-center gap-3 mb-8">
+                        <span class="material-symbols-outlined text-primary">description</span>
+                        <h2 class="font-headline-lg text-[24px] text-on-surface">Descripción de Servicios</h2>
+                    </div>
+                    <textarea
+                        class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                        placeholder="Describe brevemente los servicios que ofrece tu empresa..."
+                        rows="4">Somos líderes en integración de sistemas y gestión de procesos digitales para medianas empresas.</textarea>
+                </div>
+            </div>
+            <!-- Stats & Actions Column -->
+            <div class="space-y-8">
+                <div class="glass-card rounded-[1.5rem] p-8 border-primary/20">
+                    <h3 class="font-label-bold text-label-bold text-primary mb-6 uppercase tracking-wider">Estado de la
+                        Cuenta</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <span class="text-on-surface-variant font-body-sm">Plan Actual</span>
+                            <span
+                                class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[12px] font-bold">PREMIUM</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-on-surface-variant font-body-sm">Citas este mes</span>
+                            <span class="text-on-surface font-bold">1,240</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-on-surface-variant font-body-sm">Calificación</span>
+                            <div class="flex items-center gap-1 text-tertiary">
+                                <span class="material-symbols-outlined text-[18px]"
+                                    style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="font-bold">4.9</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-8 border-outline-variant/30" />
+                    <button
+                        class="w-full btn-gradient py-4 text-white rounded-full font-label-bold text-label-bold flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">save</span>
+                        Guardar Cambios
+                    </button>
+                    <button
+                        class="w-full mt-4 py-4 bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors rounded-full font-label-bold text-label-bold">
+                        Cancelar
+                    </button>
+                </div>
+                <div class="glass-card rounded-[1.5rem] p-8">
+                    <h3 class="font-label-bold text-label-bold text-on-surface mb-4">Configuración de Seguridad</h3>
+                    <p class="text-body-sm text-on-surface-variant mb-6">Gestiona quién puede editar la información de
+                        la empresa.</p>
+                    <a class="flex items-center justify-between p-4 bg-white border border-outline-variant rounded-xl hover:border-primary transition-all group"
+                        href="#">
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">shield_person</span>
+                            <span class="text-body-md font-medium">Permisos de Equipo</span>
+                        </div>
+                        <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer (Updated from SCREEN_20) -->
+    <footer
+        class="w-full py-stack-lg px-gutter mt-stack-lg bg-glass-fill backdrop-blur-lg border-t border-glass-border rounded-t-3xl">
+        <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+            <div class="max-w-xs">
+                <div class="font-headline-lg text-on-surface font-bold mb-4">Gestor de Citas</div>
+                <p class="text-on-surface-variant font-body-sm opacity-80 mb-6">
+                    © 2024 Gestor de Citas. Innovación y eficiencia en cada cita.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-12 w-full md:w-auto">
+                <div class="flex flex-col gap-4">
+                    <span class="text-primary font-bold font-label-bold">Empresa</span>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm" href="#">Sobre
+                        nosotros</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm"
+                        href="#">Carreras</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm"
+                        href="#">Contacto</a>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <span class="text-primary font-bold font-label-bold">Servicios</span>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm"
+                        href="#">Agenda</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm"
+                        href="#">Perfiles</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm"
+                        href="#">Notificaciones</a>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <span class="text-primary font-bold font-label-bold">Legal</span>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm"
+                        href="#">Términos</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm"
+                        href="#">Privacidad</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm"
+                        href="#">Cookies</a>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <span class="text-primary font-bold font-label-bold">Síguenos</span>
+                    <div class="flex gap-4 items-center">
+                        <a class="opacity-80 hover:opacity-100 transition-opacity" href="#">
+                            <img alt="Instagram" class="w-5 h-5 filter grayscale brightness-50"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwy34TV1qvSQ55lb4Vq4QS-SyVHb3JsIAaI_lrf57xLEX-kDSB1DgmrR6d14CMRhoYlUE7kAycQKqMj9HufpjFYXHhGjaKdpYxXWIEQ-NZFaJ20Qza-YXKQaB7igeLjqT-El7q0_u67ihtbO1IDmH7Aeelk1d64Dq7YQCRKQRtLLyuFXAytTs21CClCxmXIIEwHMbXnoprzMKkinuzgLHNTPfWTkAB1qaCbeVm2IBbWIAcG4EUezknHRAvmAF1mI6M0WWOzOHeHoBG" />
+                        </a>
+                        <a class="opacity-80 hover:opacity-100 transition-opacity" href="#">
+                            <img alt="Twitter" class="w-5 h-5 filter grayscale brightness-50"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaemF3uyrjQKicVTO2ti_BF9875uXL4I9fB-yDjf6vHSEyYCJsimjJNkHOcEcOSEERv_p6Dy7-PnCAPtAB4Uz-yqzE4MUxPRz7U-r--Th5sN_BgQbwsQpFy68j9IA8xzzN1-FpD_N21rIog5QNpDK84KxMMjiKzVsZ44j3qhBx72gyyaiPPLWRwUeXis9_hejX5THEfawchOkm1I7MVkZBkYdE5_C9Va8_p5XgI1OwG0HhO5Rr0Lwjl2glJi__rH4bUq7sJzRfpI80" />
+                        </a>
+                        <a class="opacity-80 hover:opacity-100 transition-opacity" href="#">
+                            <img alt="LinkedIn" class="w-5 h-5 filter grayscale brightness-50"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQkcRqT68NlEZc5DQmCsP4-s_PVIeHwmBRpeMfyFynLX-RZgMzeodNwU4mcBL8gY83_RHWXqjXFxjzePCjoQ96SGTxrwZGWIRw5fQRtsYsDOp7SZ-iKekzfPDi_tssA0_1USLtR38R36eR0q5gOBTuAB0hGWC4D8V1iPOzzH2sh1o3V3A_rwV6lJuVQhNZtCzJocjOqrNU3YcS3gq2QxsWiCao1pBkO6kDzGptlS2eKd-QjLI651EYgaw2ECy5Fpk8HETSbOawbqvT" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Micro-interaction for inputs
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.closest('.glass-card').style.boxShadow = '0px 25px 40px -10px rgba(70, 72, 212, 0.08)';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.closest('.glass-card').style.boxShadow = '0px 20px 25px -5px rgba(0,0,0,0.05)';
+            });
+        });
+
+        // "Save Changes" notification simulation
+        document.querySelector('.btn-gradient').addEventListener('click', function () {
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Guardando...';
+            setTimeout(() => {
+                this.innerHTML = '<span class="material-symbols-outlined">check_circle</span> ¡Guardado!';
+                this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                setTimeout(() => {
+                    this.innerHTML = '<span class="material-symbols-outlined">save</span> Guardar Cambios';
+                    this.style.background = '';
+                }, 2000);
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
