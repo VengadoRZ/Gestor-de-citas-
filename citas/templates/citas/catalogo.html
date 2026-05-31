@@ -8,12 +8,16 @@
 <main class="max-w-container-max mx-auto px-4 md:px-gutter py-8 pb-stack-lg">
 
     <!-- Search Hero Section -->
-    <section class="hero-gradient relative mb-10 overflow-hidden rounded-3xl p-8 md:p-12">
-        <!-- Decorative atmospheric blobs -->
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
-        <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none"></div>
+    <section class="hero-gradient relative mb-10 overflow-hidden rounded-3xl p-8 md:p-12 min-h-[400px] flex items-center justify-center">
+        <!-- Floating Shapes -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="animate-float absolute top-[10%] left-[15%] w-64 h-64 rounded-full bg-primary/20 blur-[80px]" style="transform: translate(15.1094px, 14.5211px);"></div>
+            <div class="animate-float absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-secondary/15 blur-[100px]" style="animation-delay: -5s; transform: translate(15.1094px, 14.5211px);"></div>
+            <div class="animate-float absolute top-[40%] right-[30%] w-48 h-48 rounded-full border border-white/10 backdrop-blur-sm bg-white/5" style="animation-delay: -2s; border-radius: 40% 60% 70% 30% / 40% 50% 60% 70%; transform: translate(15.1094px, 14.5211px);"></div>
+            <div class="animate-float absolute bottom-[10%] left-[20%] w-72 h-72 rounded-full border border-white/5 backdrop-blur-md bg-white/5" style="animation-delay: -8s; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(15.1094px, 14.5211px);"></div>
+        </div>
 
-        <div class="relative z-10 max-w-2xl mx-auto text-center">
+        <div class="relative z-10 w-full max-w-2xl mx-auto text-center">
             <h1 class="font-headline-xl text-3xl md:text-headline-xl text-white mb-3">Encuentra el servicio perfecto</h1>
             <p class="text-body-md text-white/90 mb-8 max-w-lg mx-auto">Reserva citas con los mejores profesionales en salud, tecnología y bienestar en un solo clic.</p>
 

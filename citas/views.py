@@ -208,7 +208,7 @@ def catalogo_servicios(request):
     servicios = Servicio.objects.filter(
         models.Q(nombre__icontains=busqueda) |
         models.Q(empresa__nombre_negocio__icontains=busqueda)
-    )
+    ).filter(activo=True)
 
     return render(request, 'citas/catalogo.html', {
         'servicios': servicios,
@@ -344,6 +344,10 @@ def cambiar_estado_cita(request, cita_id):
         return redirect('home')
     if request.method == 'POST':
         cita = get_object_or_404(Cita, id=cita_id, servicio__empresa__usuario=request.user)
+        # No se puede revertir una cancelación hecha por el cliente
+        if cita.estado == 'cancelada':
+            messages.warning(request, 'Esta cita fue cancelada por el cliente y no se puede revertir.')
+            return redirect('agenda_empresa')
         nuevo_estado = request.POST.get('estado')
         if nuevo_estado in ['pendiente', 'activa', 'finalizada']:
             cita.estado = nuevo_estado
@@ -368,3 +372,15 @@ def crear_servicio(request):
         form = ServicioForm()
 
     return render(request, 'citas/crear_servicio.html', {'form': form})
+
+
+@login_required
+def toggle_servicio(request, servicio_id):
+    if request.method == 'POST':
+        try:
+            servicio = get_object_or_404(Servicio, id=servicio_id, empresa=request.user.empresa)
+            servicio.activo = not servicio.activo
+            servicio.save()
+        except:
+            pass
+    return redirect('crear_servicio')

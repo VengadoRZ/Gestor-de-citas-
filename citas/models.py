@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 
 
 class Usuario(AbstractUser):
@@ -41,9 +42,10 @@ class Servicio(models.Model):
     )
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='servicios')
     nombre = models.CharField(max_length=100)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    precio = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.0)])
     categoria = models.CharField(max_length=50, choices=CATEGORIAS, default='general')
     imagen = models.ImageField(upload_to='servicios/', null=True, blank=True)
+    activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre
@@ -52,6 +54,7 @@ class Cita(models.Model):
     ESTADOS = (
         ('pendiente', 'Pendiente'),
         ('activa', 'Activa'),
+        ('cancelada', 'Cancelada'),
         ('finalizada', 'Finalizada'),
     )
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)

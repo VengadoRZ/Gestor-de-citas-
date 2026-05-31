@@ -116,6 +116,19 @@
         background: rgba(70, 72, 212, 0.1) !important;
         border: 2px solid #4648d4 !important;
     }
+    
+    /* Explicit badge styles to guarantee contrast in both modes */
+    .badge-pendiente { background-color: #fef3c7; color: #92400e; }
+    html.dark .badge-pendiente { background-color: #78350f; color: #fef3c7; }
+
+    .badge-activa { background-color: #dbeafe; color: #1e40af; }
+    html.dark .badge-activa { background-color: #1e3a8a; color: #dbeafe; }
+
+    .badge-finalizada { background-color: #dcfce7; color: #166534; }
+    html.dark .badge-finalizada { background-color: #14532d; color: #dcfce7; }
+
+    .badge-cancelada { background-color: #fee2e2; color: #991b1b; }
+    html.dark .badge-cancelada { background-color: #7f1d1d; color: #fee2e2; }
 </style>
 
 <script>
@@ -157,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
         const isToday = (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day);
 
-        dayDiv.className = `day-cell border-r border-b border-glass-border p-3 cursor-pointer transition-all flex flex-col justify-between ${isWeekend ? 'bg-primary-fixed/5' : ''}`;
+        dayDiv.className = `day-cell border-r border-b border-glass-border p-3 cursor-pointer transition-all flex flex-col justify-between`;
         dayDiv.dataset.day = day;
 
         let badgeHtml = '';
@@ -183,9 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Estado badge helper
     function estadoBadge(estado) {
         const map = {
-            'pendiente': { bg: 'bg-amber-100 text-amber-700', label: 'PENDIENTE' },
-            'activa':    { bg: 'bg-blue-100 text-blue-700',   label: 'ACTIVA' },
-            'finalizada':{ bg: 'bg-green-100 text-green-700', label: 'FINALIZADA' },
+            'pendiente':  { bg: 'badge-pendiente',   label: 'PENDIENTE' },
+            'activa':     { bg: 'badge-activa',      label: 'ACTIVA' },
+            'finalizada': { bg: 'badge-finalizada',  label: 'FINALIZADA' },
+            'cancelada':  { bg: 'badge-cancelada',   label: 'CANCELADA' },
         };
         const s = map[estado] || map['pendiente'];
         return `<span class="${s.bg} px-2 py-0.5 rounded text-[10px] font-bold">${s.label}</span>`;
@@ -215,6 +229,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = 'bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/30 hover:border-primary/40 transition-all group';
                 card.id = `cita-card-${cita.id}`;
 
+                // Si la cita está cancelada por el cliente, el selector queda solo-lectura
+                const isCancelada = cita.estado === 'cancelada';
+                const selectorHtml = isCancelada
+                    ? `<div class="flex items-center gap-2 mt-2 pt-3 border-t border-outline-variant/20">
+                           <span class="flex-1 text-xs px-3 py-2 rounded-xl border border-red-300 bg-red-50 text-red-600 font-bold text-center">❌ Cancelada por el cliente</span>
+                       </div>`
+                    : `<form method="POST" action="${baseEstadoUrl}${cita.id}/" class="flex items-center gap-2 mt-2 pt-3 border-t border-outline-variant/20">
+                           <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
+                           <select name="estado" onchange="this.form.submit()"
+                               class="flex-1 text-xs px-3 py-2 rounded-xl border border-outline-variant bg-surface-container-low outline-none focus:border-primary cursor-pointer transition-all">
+                               <option value="pendiente"  ${cita.estado === 'pendiente'  ? 'selected' : ''}>⏳ Pendiente</option>
+                               <option value="activa"     ${cita.estado === 'activa'     ? 'selected' : ''}>🔵 Activa</option>
+                               <option value="finalizada" ${cita.estado === 'finalizada' ? 'selected' : ''}>✅ Finalizada</option>
+                           </select>
+                           <span class="text-xs text-on-surface-variant">Cambiar estado</span>
+                       </form>`;
+
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-3">
                         <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tight">${cita.hora}</span>
@@ -225,17 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="material-symbols-outlined text-sm">person</span>
                         <span class="text-body-sm">${cita.cliente_nombre || cita.cliente}</span>
                     </div>
-                    <!-- Estado Selector -->
-                    <form method="POST" action="${baseEstadoUrl}${cita.id}/" class="flex items-center gap-2 mt-2 pt-3 border-t border-outline-variant/20">
-                        <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
-                        <select name="estado" onchange="this.form.submit()"
-                            class="flex-1 text-xs px-3 py-2 rounded-xl border border-outline-variant bg-surface-container-low outline-none focus:border-primary cursor-pointer transition-all">
-                            <option value="pendiente" ${cita.estado === 'pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
-                            <option value="activa"    ${cita.estado === 'activa'    ? 'selected' : ''}>🔵 Activa</option>
-                            <option value="finalizada" ${cita.estado === 'finalizada' ? 'selected' : ''}>✅ Finalizada</option>
-                        </select>
-                        <span class="text-xs text-on-surface-variant">Cambiar estado</span>
-                    </form>
+                    ${selectorHtml}
                 `;
                 appointmentsListEl.appendChild(card);
             });

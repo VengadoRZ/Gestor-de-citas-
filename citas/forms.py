@@ -31,6 +31,6 @@ class ServicioForm(forms.ModelForm):
         fields = ['nombre', 'precio', 'categoria', 'imagen']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Limpieza Dental'}),
-            'precio': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '0.00'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '0.00', 'min': '0', 'step': '0.01'}),
             'categoria': forms.Select(attrs={'class': 'form-control'}),
         }
