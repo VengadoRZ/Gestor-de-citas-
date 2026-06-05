@@ -45,15 +45,13 @@
                     {% if user.tipo_perfil == 'empresa' %}
                         <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
                     {% else %}
-                        <a class="text-on-surface-variant font-body-md hover:text-primary transition-all duration-300" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
+                        <a class="{% if request.resolver_match.url_name == 'calendario_cliente' %}text-primary font-bold border-b-2 border-primary{% else %}text-on-surface-variant hover:text-primary{% endif %} pb-1 font-body-md transition-all duration-300" href="{% url 'calendario_cliente' %}">Mis Citas</a>
+                        <a class="{% if request.resolver_match.url_name == 'catalogo_servicios' %}text-primary font-bold border-b-2 border-primary{% else %}text-on-surface-variant hover:text-primary{% endif %} pb-1 font-body-md transition-all duration-300" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
                     {% endif %}
                     
                     <!-- Theme Toggle -->
                     <button id="theme-toggle" class="text-on-surface-variant hover:text-primary transition-all duration-300 flex items-center focus:outline-none ml-2">
-                        <!-- Sol (cambiar a claro) -->
-                        <span id="theme-icon-light" class="material-symbols-outlined text-2xl hidden">light_mode</span>
-                        <!-- Luna (cambiar a oscuro) -->
-                        <span id="theme-icon-dark" class="material-symbols-outlined text-2xl hidden">dark_mode</span>
+                        <span id="theme-icon" class="material-symbols-outlined text-2xl">dark_mode</span>
                     </button>
                     
                     <!-- Notificaciones -->
@@ -109,11 +107,35 @@
                 {% endif %}
             </div>
             
-            <!-- Mobile Menu Icon (Placeholder) -->
-            <div class="md:hidden">
-                <span class="material-symbols-outlined text-primary">menu</span>
+            <!-- Mobile Menu Icon & Actions -->
+            <div class="md:hidden flex items-center gap-4">
+                <button id="theme-toggle-mobile" class="text-on-surface-variant hover:text-primary transition-all duration-300 flex items-center focus:outline-none">
+                    <span id="theme-icon-mobile" class="material-symbols-outlined text-2xl">dark_mode</span>
+                </button>
+                <button id="mobile-menu-btn" class="focus:outline-none flex items-center">
+                    <span class="material-symbols-outlined text-primary text-3xl">menu</span>
+                </button>
             </div>
         </nav>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 mt-4 mx-margin-mobile bg-glass-fill backdrop-blur-xl border border-glass-border rounded-2xl shadow-lg p-6 flex-col gap-4">
+            <a class="text-on-surface-variant hover:text-primary font-body-md transition-colors" href="{% url 'home' %}">Inicio</a>
+            {% if user.is_authenticated %}
+                <a class="text-on-surface-variant hover:text-primary font-body-md transition-colors" href="{% url 'perfil' %}">Mi Perfil</a>
+                {% if user.tipo_perfil == 'empresa' %}
+                    <a class="text-on-surface-variant hover:text-primary font-body-md transition-colors" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
+                {% else %}
+                    <a class="text-on-surface-variant hover:text-primary font-body-md transition-colors" href="{% url 'calendario_cliente' %}">Mis Citas</a>
+                    <a class="text-on-surface-variant hover:text-primary font-body-md transition-colors" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
+                {% endif %}
+                <hr class="border-outline-variant/30 my-2">
+                <a href="#" onclick="document.getElementById('logout-form').submit();" class="text-error font-body-md hover:text-error-container transition-colors">Cerrar Sesión</a>
+            {% else %}
+                <a class="text-on-surface-variant hover:text-primary font-body-md transition-colors" href="{% url 'login' %}">Iniciar Sesión</a>
+                <a class="text-on-surface-variant hover:text-primary font-body-md transition-colors" href="{% url 'register' %}">Registro</a>
+            {% endif %}
+        </div>
     </header>
 
     <!-- Espaciado para el TopNavBar fijo en las páginas que no sean el Home hero -->
@@ -184,30 +206,40 @@
     <script>
         // Theme Toggle Script
         const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeIconLight = document.getElementById('theme-icon-light');
-        const themeIconDark = document.getElementById('theme-icon-dark');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
+        const themeIconMobile = document.getElementById('theme-icon-mobile');
 
         function updateThemeIcon() {
-            if (document.documentElement.classList.contains('dark')) {
-                themeIconLight.classList.remove('hidden');
-                themeIconDark.classList.add('hidden');
-            } else {
-                themeIconLight.classList.add('hidden');
-                themeIconDark.classList.remove('hidden');
-            }
+            const isDark = document.documentElement.classList.contains('dark');
+            if (themeIcon) themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
+            if (themeIconMobile) themeIconMobile.textContent = isDark ? 'light_mode' : 'dark_mode';
         }
 
-        if (themeToggleBtn) {
-            updateThemeIcon(); // Inicializar icono
-            themeToggleBtn.addEventListener('click', () => {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.theme = 'light';
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.theme = 'dark';
-                }
-                updateThemeIcon();
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+            updateThemeIcon();
+        }
+
+        if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+        if (themeToggleMobileBtn) themeToggleMobileBtn.addEventListener('click', toggleTheme);
+        
+        updateThemeIcon(); // Inicializar iconos
+
+        // Mobile Menu Script
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
             });
         }
         

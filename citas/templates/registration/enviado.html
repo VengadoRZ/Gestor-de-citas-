@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>¡Correo enviado! | CitaManager</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@700&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f5f2fe",
+                        "on-surface": "#1b1b23",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container": "#efecf8",
+                        "secondary-container": "#9c48ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "bg-canvas": "#F8FAFC",
+                        "glass-border": "rgba(255, 255, 255, 0.4)",
+                        "tertiary-container": "#b55d00",
+                        "surface-container-high": "#e9e6f3",
+                        "surface-bright": "#fcf8ff",
+                        "surface": "#fcf8ff",
+                        "glass-fill": "rgba(255, 255, 255, 0.7)",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e4e1ed",
+                        "secondary": "#8127cf",
+                        "surface-dim": "#dbd8e4",
+                        "error": "#ba1a1a",
+                        "background": "#fcf8ff",
+                        "on-primary-fixed": "#07006c",
+                        "on-background": "#1b1b23",
+                        "inverse-surface": "#303038",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#2c0051",
+                        "primary": "#4648d4",
+                        "surface-variant": "#e4e1ed",
+                        "primary-fixed": "#e1e0ff",
+                        "secondary-fixed": "#f0dbff",
+                        "outline": "#767586",
+                        "on-tertiary-fixed": "#301400",
+                        "on-surface-variant": "#464554",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "inverse-on-surface": "#f2effb",
+                        "surface-tint": "#494bd6",
+                        "primary-container": "#6063ee",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "on-secondary-container": "#fffbff",
+                        "outline-variant": "#c7c4d7",
+                        "electric-violet": "#7E22CE",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#c0c1ff",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#904900",
+                        "deep-indigo": "#4338CA",
+                        "tertiary-fixed": "#ffdcc5",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-tertiary-fixed-variant": "#703700"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-bold": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-bold": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.25", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F8FAFC;
+            background-image: radial-gradient(at 0% 0%, rgba(70, 72, 212, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(129, 39, 207, 0.05) 0px, transparent 50%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #4648d4 0%, #8127cf 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(70, 72, 212, 0.3);
+        }
+
+        .success-animation {
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col font-body-md text-on-surface overflow-x-hidden">
+    <!-- TopNavBar - Contextual Suppression Check: Login/Transactional -> Navigation Hidden, Brand Only -->
+    <header class="sticky top-0 w-full bg-glass-fill backdrop-blur-xl border-b border-glass-border shadow-md z-50">
+        <div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+            <div class="flex items-center gap-2">
+                <span class="font-headline-lg text-headline-lg font-extrabold text-primary">CitaManager</span>
+            </div>
+            <!-- Navigation links and primary action suppressed for transactional/success focus -->
+        </div>
+    </header>
+    <main class="flex-grow flex items-center justify-center px-margin-mobile py-stack-lg relative overflow-hidden">
+        <!-- Decorative Ambient Background Elements -->
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl -z-10"></div>
+        <!-- Confirmation Card -->
+        <section
+            class="glass-card w-full max-w-[480px] md:p-12 rounded-[2rem] text-center flex flex-col items-center gap-stack-md transition-all duration-500 opacity-100 p-12"
+            style="transform: rotateY(-6deg) rotateX(-7.87deg);"><!-- Success Visual Anchor -->
+            <div
+                class="w-24 h-24 rounded-full bg-surface-container-low flex items-center justify-center mb-6 success-animation shadow-inner border border-primary/10">
+                <span class="material-symbols-outlined text-primary text-[48px]"
+                    style="font-variation-settings: 'FILL' 1;">
+                    check_circle
+                </span>
+            </div>
+            <h1 class="font-headline-lg text-headline-lg md:text-headline-xl text-on-surface tracking-tight mb-2">
+                ¡Correo enviado!
+            </h1>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed max-w-[360px] mb-4">
+                Te hemos enviado un correo con las instrucciones para restablecer tu contraseña. Si no lo recibes en
+                unos minutos, revisa tu carpeta de spam.
+            </p>
+            <div class="mt-stack-lg w-full flex flex-col gap-4">
+                <a class="btn-gradient w-full py-4 px-8 rounded-full text-white font-label-bold text-label-bold flex items-center justify-center gap-2 group active:scale-95 duration-200"
+                    href="/login">
+                    Volver al inicio de sesión
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
+                        arrow_forward
+                    </span>
+                </a>
+                <button class="w-full py-3 text-primary font-label-bold text-label-bold hover:underline transition-all">
+                    ¿No recibiste el correo? Reenviar
+                </button>
+            </div>
+            <!-- Supporting Imagery for visual balance -->
+            <div class="mt-stack-md pt-8 border-t border-glass-border w-full">
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container-highest">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center px-gutter py-stack-lg max-w-container-max mx-auto gap-stack-md">
+            <div class="flex flex-col items-center md:items-start gap-2">
+                <span
+                    class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface">CitaManager</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 CitaManager SaaS. Todos los derechos
+                    reservados.</p>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-6">
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all"
+                    href="#">Privacidad</a>
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all"
+                    href="#">Términos</a>
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all"
+                    href="#">Soporte</a>
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all"
+                    href="#">API</a>
+                <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all"
+                    href="#">Blog</a>
+            </nav>
+        </div>
+    </footer>
+    <script>
+        // Micro-interaction: Hover effect for the card
+        const card = document.querySelector('.glass-card');
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        });
+
+        // Entrance animation sequence
+        window.addEventListener('load', () => {
+            card.classList.add('opacity-100');
+            card.style.transform = 'translateY(0)';
+        });
+    </script>
+
+
+</body>
+
+</html>

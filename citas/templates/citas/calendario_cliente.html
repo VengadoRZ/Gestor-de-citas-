@@ -1,105 +1,219 @@
+{% extends 'citas/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Mis Citas</title>
-    <link rel="stylesheet" href="{% static 'citas/principal.css' %}">
-</head>
+{% block title %}Mis Citas | Gestor de Citas{% endblock %}
 
-<body>
-    <!-- Navbar (puedes usar la misma que en home) -->
-    <nav class="navbar">
-        <a class="navbar-brand" href="{% url 'home' %}">Inicio</a>
-        <a class="navbar-brand" href="{% url 'perfil' %}">Mi Perfil</a>
-        {% if user.is_authenticated %}
-        {% if user.tipo_perfil == 'empresa' %}
-        <a class="navbar-brand" href="{% url 'agenda_empresa' %}">Ver mi Agenda</a>
-        {% else %}
-        <a class="navbar-brand" href="{% url 'catalogo_servicios' %}">Buscar Servicios</a>
-        {% endif %}
-        <a href="#" onclick="document.getElementById('logout-form').submit();" class="navbar-brand text-danger">Cerrar
-            sesión</a>
-        {% else %}
-        <a href="{% url 'login' %}" class="navbar-brand">Iniciar Sesión</a>
-        {% endif %}
-    </nav>
-    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-        {% csrf_token %}
-    </form>
+{% block legacy_css %}{% endblock %}
 
-    <!-- Mensajes (por si hay avisos) -->
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
+{% block extra_css %}
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    }
 
-    <main class="container">
-        <h2>Mis Citas</h2>
+    .tab-active {
+        position: relative;
+    }
 
-        {% if citas %}
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Servicio</th>
-                    <th>Negocio</th>
-                    <th>Fecha y hora</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for cita in citas %}
-                <tr>
-                    <td>{{ cita.servicio.nombre }}</td>
-                    <td>{{ cita.servicio.empresa.nombre_negocio }}</td>
-                    <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
-                    <td>
-                        {% if cita.estado %}
-                        <span
-                            class="badge {% if cita.estado == 'pendiente' %}bg-warning{% elif cita.estado == 'confirmada' %}bg-info{% elif cita.estado == 'cancelada' %}bg-danger{% elif cita.estado == 'completada' %}bg-success{% else %}bg-secondary{% endif %}">
-                            {{ cita.get_estado_display }}
-                        </span>
+    .tab-active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(to right, #4648d4, #8127cf);
+        border-radius: 9999px;
+    }
+
+    /* Ocultar barra de scroll de forma nativa */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;  /* IE y Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter py-stack-lg">
+    <!-- Header Section -->
+    <section class="mb-stack-lg animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <h1 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface mb-2">Mis Citas</h1>
+        <p class="text-on-surface-variant font-body-md max-w-2xl">Gestiona tus reservas actuales, revisa tu historial de servicios y programa nuevas experiencias con un solo clic.</p>
+    </section>
+
+    <!-- Filters / Tabs -->
+    <div class="flex items-center border-b border-outline-variant mb-gutter overflow-x-auto whitespace-nowrap scrollbar-hide">
+        <button class="px-gutter py-4 text-primary font-bold tab-active transition-all" id="tab-upcoming">Próximas</button>
+        <button class="px-gutter py-4 text-on-surface-variant hover:text-primary font-medium transition-all" id="tab-past">Pasadas</button>
+        <button class="px-gutter py-4 text-on-surface-variant hover:text-primary font-medium transition-all" id="tab-cancelled">Canceladas</button>
+    </div>
+
+    <!-- Appointment Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter transition-all duration-300" id="appointments-container">
+        {% for cita in citas %}
+            <div class="appointment-card glass-card rounded-xl p-6 hover:scale-[1.01] hover:shadow-xl group"
+                 data-status="{% if cita.estado == 'pendiente' or cita.estado == 'activa' %}upcoming{% elif cita.estado == 'finalizada' or cita.estado == 'completada' %}past{% elif cita.estado == 'cancelada' %}cancelled{% else %}upcoming{% endif %}">
+                <div class="flex flex-col md:flex-row gap-stack-md">
+                    <!-- Service Image / Icon -->
+                    <div class="relative flex-shrink-0">
+                        {% if cita.servicio.imagen %}
+                            <img src="{{ cita.servicio.imagen.url }}" alt="{{ cita.servicio.nombre }}" class="w-full md:w-32 h-32 object-cover rounded-lg" />
                         {% else %}
-                        <span class="badge bg-secondary">Sin estado</span>
+                            <div class="w-full md:w-32 h-32 bg-primary/10 rounded-lg flex items-center justify-center text-primary/60">
+                                <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">
+                                    {% if cita.servicio.categoria == 'salud' %}medical_services
+                                    {% elif cita.servicio.categoria == 'bienestar' %}content_cut
+                                    {% elif cita.servicio.categoria == 'deporte' %}fitness_center
+                                    {% elif cita.servicio.categoria == 'educacion' %}school
+                                    {% elif cita.servicio.categoria == 'asesoria' %}chat
+                                    {% elif cita.servicio.categoria == 'hogar' %}home_repair_service
+                                    {% elif cita.servicio.categoria == 'tecnologia' %}devices
+                                    {% elif cita.servicio.categoria == 'creatividad' %}palette
+                                    {% elif cita.servicio.categoria == 'automotriz' %}directions_car
+                                    {% else %}category
+                                    {% endif %}
+                                </span>
+                            </div>
                         {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'agendar_cita' cita.servicio.id %}"
-                            class="btn btn-sm btn-outline-primary">Repetir</a>
-                        {% if cita.estado == 'pendiente' %}
-                        <a href="{% url 'cancelar_cita' cita.id %}" class="btn btn-sm btn-outline-danger">Cancelar</a>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </div>
 
-        <!-- Paginación -->
-        <nav>
-            <ul class="pagination">
-                {% if citas.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page=1">&laquo; primera</a></li>
-                <li class="page-item"><a class="page-link" href="?page={{ citas.previous_page_number }}">anterior</a>
-                </li>
-                {% endif %}
-                <li class="page-item disabled"><span class="page-link">Página {{ citas.number }} de {{
-                        citas.paginator.num_pages }}</span></li>
-                {% if citas.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ citas.next_page_number }}">siguiente</a></li>
-                <li class="page-item"><a class="page-link" href="?page={{ citas.paginator.num_pages }}">última
-                        &raquo;</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% else %}
-        <p>No tienes citas registradas.</p>
-        <a href="{% url 'catalogo_servicios' %}" class="btn btn-primary">Buscar servicios</a>
-        {% endif %}
-    </main>
-</body>
+                    <!-- Details -->
+                    <div class="flex-grow flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-headline-lg text-[20px] text-on-surface group-hover:text-primary transition-colors">
+                                    {{ cita.servicio.nombre }}
+                                </h3>
+                                <p class="text-on-surface-variant text-body-sm font-medium">
+                                    {{ cita.servicio.empresa.nombre_negocio }}
+                                </p>
+                            </div>
+                            <span class="{% if cita.estado == 'pendiente' or cita.estado == 'activa' %}bg-primary-fixed text-on-primary-fixed-variant{% elif cita.estado == 'finalizada' or cita.estado == 'completada' %}bg-surface-variant text-on-surface-variant{% else %}bg-error-container text-on-error-container{% endif %} text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                {{ cita.get_estado_display }}
+                            </span>
+                        </div>
 
-</html>
+                        <!-- Date & Time -->
+                        <div class="flex flex-wrap gap-4 mt-4 mb-6">
+                            <div class="flex items-center gap-2 text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[20px] text-primary">calendar_today</span>
+                                <span class="text-body-sm">{{ cita.fecha_hora|date:"d \d\e F, Y" }}</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[20px] text-primary">schedule</span>
+                                <span class="text-body-sm">{{ cita.fecha_hora|date:"H:i A" }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-wrap gap-3 mt-auto">
+                            <a href="{% url 'agendar_cita' cita.servicio.id %}"
+                               class="flex-grow md:flex-none text-center bg-gradient-to-r from-primary to-secondary text-white font-label-bold px-6 py-3 rounded-full hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+                                Repetir cita
+                            </a>
+                            {% if cita.estado == 'pendiente' %}
+                                <a href="{% url 'cancelar_cita' cita.id %}"
+                                   class="flex-grow md:flex-none text-center border border-error text-error hover:bg-error-container hover:text-on-error-container font-label-bold px-6 py-3 rounded-full transition-all active:scale-95">
+                                    Cancelar
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    <div class="hidden flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in-95 duration-500" id="empty-state">
+        <div class="w-24 h-24 bg-surface-container-high rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-[48px] text-primary/40">event_busy</span>
+        </div>
+        <h2 class="font-headline-lg text-on-surface mb-2">No tienes citas en esta categoría</h2>
+        <p class="text-on-surface-variant max-w-sm mx-auto mb-8">Parece que aún no tienes servicios programados aquí. ¡Explora nuevos servicios y reserva tu lugar!</p>
+        <a href="{% url 'catalogo_servicios' %}"
+           class="bg-gradient-to-r from-primary to-secondary text-white font-label-bold px-8 py-4 rounded-full shadow-lg hover:shadow-primary/30 transition-all hover:scale-105">
+            Buscar Servicios
+        </a>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = ['tab-upcoming', 'tab-past', 'tab-cancelled'];
+        const appointmentsContainer = document.getElementById('appointments-container');
+        const emptyState = document.getElementById('empty-state');
+        const cards = document.querySelectorAll('.appointment-card');
+
+        function filterAppointments(status) {
+            let visibleCount = 0;
+            cards.forEach(card => {
+                if (card.dataset.status === status) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            if (visibleCount === 0) {
+                appointmentsContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            } else {
+                appointmentsContainer.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                emptyState.classList.remove('flex');
+            }
+        }
+
+        tabs.forEach(tabId => {
+            const btn = document.getElementById(tabId);
+            if (!btn) return;
+            btn.addEventListener('click', () => {
+                tabs.forEach(id => {
+                    const otherBtn = document.getElementById(id);
+                    if (otherBtn) {
+                        otherBtn.classList.remove('text-primary', 'font-bold', 'tab-active');
+                        otherBtn.classList.add('text-on-surface-variant', 'font-medium');
+                    }
+                });
+                btn.classList.add('text-primary', 'font-bold', 'tab-active');
+                btn.classList.remove('text-on-surface-variant', 'font-medium');
+
+                appointmentsContainer.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => {
+                    const statusMap = {
+                        'tab-upcoming': 'upcoming',
+                        'tab-past': 'past',
+                        'tab-cancelled': 'cancelled'
+                    };
+                    filterAppointments(statusMap[tabId]);
+                    appointmentsContainer.classList.remove('opacity-0', 'translate-y-4');
+                }, 300);
+            });
+        });
+
+        // Init
+        filterAppointments('upcoming');
+
+        // Card animation on hover
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+{% endblock %}

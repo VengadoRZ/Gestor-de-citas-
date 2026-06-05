@@ -159,18 +159,30 @@
                                 {% if not servicio.imagen %}
                                 <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">
-                                        {% if servicio.categoria == 'urgencias' %}emergency
-                                        {% elif servicio.categoria == 'especializado' %}orthopedics
-                                        {% elif servicio.categoria == 'estetico' %}spa
-                                        {% else %}medical_services{% endif %}
+                                        {% if servicio.categoria == 'salud' %}medical_services
+                                        {% elif servicio.categoria == 'bienestar' %}content_cut
+                                        {% elif servicio.categoria == 'deporte' %}fitness_center
+                                        {% elif servicio.categoria == 'educacion' %}school
+                                        {% elif servicio.categoria == 'asesoria' %}chat
+                                        {% elif servicio.categoria == 'hogar' %}home_repair_service
+                                        {% elif servicio.categoria == 'tecnologia' %}devices
+                                        {% elif servicio.categoria == 'creatividad' %}palette
+                                        {% elif servicio.categoria == 'automotriz' %}directions_car
+                                        {% else %}category{% endif %}
                                     </span>
                                 </div>
                                 {% endif %}
                                 <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ml-auto
-                                    {% if servicio.categoria == 'urgencias' %}bg-red-100 text-red-700
-                                    {% elif servicio.categoria == 'especializado' %}bg-amber-100 text-amber-700
-                                    {% elif servicio.categoria == 'estetico' %}bg-purple-100 text-purple-700
-                                    {% else %}bg-green-100 text-green-700{% endif %}">
+                                    {% if servicio.categoria == 'salud' %}bg-blue-100 text-blue-700
+                                    {% elif servicio.categoria == 'bienestar' %}bg-purple-100 text-purple-700
+                                    {% elif servicio.categoria == 'deporte' %}bg-emerald-100 text-emerald-700
+                                    {% elif servicio.categoria == 'educacion' %}bg-indigo-100 text-indigo-700
+                                    {% elif servicio.categoria == 'asesoria' %}bg-amber-100 text-amber-700
+                                    {% elif servicio.categoria == 'hogar' %}bg-orange-100 text-orange-700
+                                    {% elif servicio.categoria == 'tecnologia' %}bg-teal-100 text-teal-700
+                                    {% elif servicio.categoria == 'creatividad' %}bg-pink-100 text-pink-700
+                                    {% elif servicio.categoria == 'automotriz' %}bg-slate-100 text-slate-700
+                                    {% else %}bg-gray-100 text-gray-700{% endif %}">
                                     {{ servicio.get_categoria_display }}
                                 </span>
                             </div>

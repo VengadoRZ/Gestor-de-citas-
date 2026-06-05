@@ -28,6 +28,32 @@
             <form method="POST" class="space-y-6">
                 {% csrf_token %}
 
+                <!-- Nombre -->
+                <div class="space-y-2">
+                    <label class="font-label-bold text-label-bold text-on-surface-variant px-1" for="nombre">Nombre</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-outline pointer-events-none">person</span>
+                        <input
+                            class="w-full pl-12 pr-4 py-4 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline/50 font-body-md shadow-sm"
+                            id="nombre" name="nombre" placeholder="Tu primer nombre" type="text" required
+                            oninput="this.value = this.value.replace(/[0-9]/g, '')"
+                        >
+                    </div>
+                </div>
+
+                <!-- Apellido -->
+                <div class="space-y-2">
+                    <label class="font-label-bold text-label-bold text-on-surface-variant px-1" for="apellido">Apellido</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-outline pointer-events-none">person</span>
+                        <input
+                            class="w-full pl-12 pr-4 py-4 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline/50 font-body-md shadow-sm"
+                            id="apellido" name="apellido" placeholder="Tu primer apellido" type="text" required
+                            oninput="this.value = this.value.replace(/[0-9]/g, '')"
+                        >
+                    </div>
+                </div>
+
                 <!-- Cédula -->
                 <div class="space-y-2">
                     <label class="font-label-bold text-label-bold text-on-surface-variant px-1" for="cedula">Cédula de Identidad</label>
@@ -35,7 +61,8 @@
                         <span class="material-symbols-outlined absolute left-4 text-outline pointer-events-none">badge</span>
                         <input
                             class="w-full pl-12 pr-4 py-4 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline/50 font-body-md shadow-sm"
-                            id="cedula" name="cedula" placeholder="V-00.000.000" type="text" required
+                            id="cedula" name="cedula" placeholder="Ej: 12345678" type="text" required
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                         >
                     </div>
                 </div>
@@ -48,6 +75,7 @@
                         <input
                             class="w-full pl-12 pr-4 py-4 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-outline/50 font-body-md shadow-sm"
                             id="telefono" name="telefono" placeholder="+58 412 0000000" type="tel" required
+                            oninput="this.value = this.value.replace(/[^0-9+ \-]/g, '')"
                         >
                     </div>
                 </div>

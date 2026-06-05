@@ -43,28 +43,52 @@
         </div>
     </section>
 
-    <!-- Category filters (decorative) -->
+    <!-- Category filters -->
     <section class="mb-8">
         <div class="flex items-center justify-between mb-4">
             <h2 class="font-headline-lg text-xl text-on-surface">Categorías</h2>
         </div>
-        <div class="flex gap-3 overflow-x-auto pb-2" style="scrollbar-width: none;">
-            <button class="bg-primary text-white px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-primary transition-colors text-sm">Todos</button>
-            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
-                <span class="material-symbols-outlined text-[18px]">medical_services</span> Salud
-            </button>
-            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
-                <span class="material-symbols-outlined text-[18px]">spa</span> Bienestar
-            </button>
-            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
+        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide" style="scrollbar-width: none;">
+            <a href="{% url 'catalogo_servicios' %}{% if query %}?q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors {% if not categoria_activa %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+               Todos
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=salud{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'salud' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+                <span class="material-symbols-outlined text-[18px]">medical_services</span> Salud y Medicina
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=bienestar{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'bienestar' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+                <span class="material-symbols-outlined text-[18px]">content_cut</span> Barbería y Estética
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=deporte{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'deporte' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+                <span class="material-symbols-outlined text-[18px]">fitness_center</span> Deporte y Fitness
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=educacion{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'educacion' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+                <span class="material-symbols-outlined text-[18px]">school</span> Educación
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=asesoria{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'asesoria' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+                <span class="material-symbols-outlined text-[18px]">chat</span> Asesoría
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=hogar{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'hogar' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+                <span class="material-symbols-outlined text-[18px]">home_repair_service</span> Hogar y Reparaciones
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=tecnologia{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'tecnologia' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
                 <span class="material-symbols-outlined text-[18px]">devices</span> Tecnología
-            </button>
-            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
-                <span class="material-symbols-outlined text-[18px]">fitness_center</span> Deporte
-            </button>
-            <button class="bg-white hover:bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border border-outline-variant transition-colors flex items-center gap-2 text-sm">
-                <span class="material-symbols-outlined text-[18px]">palette</span> Creatividad
-            </button>
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=creatividad{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'creatividad' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+                <span class="material-symbols-outlined text-[18px]">palette</span> Diseño y Creatividad
+            </a>
+            <a href="{% url 'catalogo_servicios' %}?categoria=automotriz{% if query %}&q={{ query }}{% endif %}" 
+               class="px-5 py-2 rounded-full font-label-bold text-label-bold whitespace-nowrap border text-sm transition-colors flex items-center gap-2 {% if categoria_activa == 'automotriz' %}bg-primary text-white border-primary{% else %}bg-white hover:bg-surface-container text-on-surface-variant border-outline-variant{% endif %}">
+                <span class="material-symbols-outlined text-[18px]">directions_car</span> Automotriz
+            </a>
         </div>
     </section>
 
@@ -93,11 +117,15 @@
                     <div class="w-full h-full flex flex-col items-center justify-center text-primary/40">
                         <span class="material-symbols-outlined text-6xl" style="font-variation-settings: 'FILL' 1;">
                             {% if s.categoria == 'salud' %}medical_services
-                            {% elif s.categoria == 'bienestar' %}spa
-                            {% elif s.categoria == 'tecnologia' %}devices
+                            {% elif s.categoria == 'bienestar' %}content_cut
                             {% elif s.categoria == 'deporte' %}fitness_center
+                            {% elif s.categoria == 'educacion' %}school
+                            {% elif s.categoria == 'asesoria' %}chat
+                            {% elif s.categoria == 'hogar' %}home_repair_service
+                            {% elif s.categoria == 'tecnologia' %}devices
                             {% elif s.categoria == 'creatividad' %}palette
-                            {% else %}business_center
+                            {% elif s.categoria == 'automotriz' %}directions_car
+                            {% else %}category
                             {% endif %}
                         </span>
                     </div>
@@ -106,8 +134,8 @@
                 <!-- Category badge -->
                 {% if s.categoria %}
                 <div class="absolute top-3 right-3">
-                    <span class="bg-primary-container text-white text-[11px] px-3 py-1 rounded-full font-label-bold capitalize">
-                        {{ s.categoria }}
+                    <span class="bg-primary-container text-white text-[11px] px-3 py-1 rounded-full font-label-bold">
+                        {{ s.get_categoria_display }}
                     </span>
                 </div>
                 {% endif %}

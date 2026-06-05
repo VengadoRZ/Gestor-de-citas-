@@ -118,9 +118,11 @@ def elegir_perfil(request):
 @login_required
 def completar_cliente(request):
     if request.method == 'POST':
+        nombre = request.POST.get('nombre', '')
+        apellido = request.POST.get('apellido', '')
         cedula = request.POST.get('cedula')
         telefono = request.POST.get('telefono')
-        Cliente.objects.create(usuario=request.user, cedula=cedula, telefono=telefono)
+        Cliente.objects.create(usuario=request.user, nombre=nombre, apellido=apellido, cedula=cedula, telefono=telefono)
         return redirect('home')
 
     return render(request, 'citas/completar_cliente.html')
@@ -165,6 +167,8 @@ def completar_perfil(request):
         else:
             Cliente.objects.create(
                 usuario=usuario,
+                nombre=request.POST.get('nombre', ''),
+                apellido=request.POST.get('apellido', ''),
                 cedula=request.POST.get('cedula', ''),
                 telefono=request.POST.get('telefono', ''),
             )
@@ -183,6 +187,8 @@ def perfil(request):
             user.save()
         if user.tipo_perfil == 'cliente':
             cliente = user.cliente
+            cliente.nombre = request.POST.get('nombre')
+            cliente.apellido = request.POST.get('apellido')
             cliente.cedula = request.POST.get('cedula')
             cliente.telefono = request.POST.get('telefono')
             cliente.save()
@@ -204,15 +210,21 @@ def perfil(request):
 @login_required
 def catalogo_servicios(request):
     busqueda = request.GET.get('q', '')
+    categoria = request.GET.get('categoria', '')
 
-    servicios = Servicio.objects.filter(
-        models.Q(nombre__icontains=busqueda) |
-        models.Q(empresa__nombre_negocio__icontains=busqueda)
-    ).filter(activo=True)
+    servicios = Servicio.objects.filter(activo=True)
+    if busqueda:
+        servicios = servicios.filter(
+            models.Q(nombre__icontains=busqueda) |
+            models.Q(empresa__nombre_negocio__icontains=busqueda)
+        )
+    if categoria:
+        servicios = servicios.filter(categoria=categoria)
 
     return render(request, 'citas/catalogo.html', {
         'servicios': servicios,
         'query': busqueda,
+        'categoria_activa': categoria,
     })
 
 

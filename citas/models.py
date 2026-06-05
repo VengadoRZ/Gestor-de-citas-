@@ -27,18 +27,27 @@ class Empresa(models.Model):
 
 class Cliente(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+    nombre = models.CharField(max_length=100, default='')
+    apellido = models.CharField(max_length=100, default='')
     cedula = models.CharField(max_length=20)
     telefono = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"{self.usuario.first_name} {self.usuario.last_name}"
+        full_name = f"{self.nombre} {self.apellido}".strip()
+        return full_name if full_name else self.usuario.username
 
 class Servicio(models.Model):
     CATEGORIAS = (
-        ('general', 'General'),
-        ('especializado', 'Especializado'),
-        ('urgencias', 'Urgencias'),
-        ('estetico', 'Estético'),
+        ('salud', 'Salud y Medicina'),
+        ('bienestar', 'Barbería y Estética'),
+        ('deporte', 'Deporte y Fitness'),
+        ('educacion', 'Educación y Tutorías'),
+        ('asesoria', 'Asesoría y Consultoría'),
+        ('hogar', 'Hogar y Reparaciones'),
+        ('tecnologia', 'Tecnología y Soporte'),
+        ('creatividad', 'Diseño y Creatividad'),
+        ('automotriz', 'Automotriz'),
+        ('general', 'General / Otros'),
     )
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='servicios')
     nombre = models.CharField(max_length=100)

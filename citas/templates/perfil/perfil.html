@@ -37,7 +37,11 @@
                     {% if user.tipo_perfil == 'empresa' and user.empresa %}
                         {{ user.empresa.nombre_negocio }}
                     {% else %}
-                        {{ user.get_full_name|default:user.username }}
+                        {% if user.cliente.nombre %}
+                            {{ user.cliente.nombre }} {{ user.cliente.apellido }}
+                        {% else %}
+                            {{ user.username }}
+                        {% endif %}
                     {% endif %}
                 </h1>
                 <p class="text-on-surface-variant font-body-sm flex items-center justify-center md:justify-start gap-2">
@@ -104,6 +108,26 @@
                     <span class="material-symbols-outlined text-primary">badge</span>
                     <h2 class="font-headline-lg text-[24px] text-on-surface">Información de Cliente</h2>
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="nombre">Nombre</label>
+                        <input
+                            id="nombre"
+                            name="nombre"
+                            class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                            type="text" value="{{ user.cliente.nombre }}" placeholder="Ej: Juan" required
+                            oninput="this.value = this.value.replace(/[0-9]/g, '')" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="apellido">Apellido</label>
+                        <input
+                            id="apellido"
+                            name="apellido"
+                            class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
+                            type="text" value="{{ user.cliente.apellido }}" placeholder="Ej: Pérez" required
+                            oninput="this.value = this.value.replace(/[0-9]/g, '')" />
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="cedula">Cédula</label>
@@ -111,7 +135,8 @@
                             id="cedula"
                             name="cedula"
                             class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
-                            type="text" value="{{ user.cliente.cedula }}" placeholder="Ej: 12345678" required />
+                            type="text" value="{{ user.cliente.cedula }}" placeholder="Ej: 12345678" required
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                     </div>
                     <div class="space-y-2">
                         <label class="font-label-bold text-label-bold text-on-surface-variant ml-1" for="telefono">Teléfono</label>
@@ -119,7 +144,8 @@
                             id="telefono"
                             name="telefono"
                             class="w-full p-4 bg-white border border-outline-variant rounded-xl input-focus text-on-surface font-body-md transition-all"
-                            type="text" value="{{ user.cliente.telefono }}" placeholder="Ej: 04141234567" required />
+                            type="text" value="{{ user.cliente.telefono }}" placeholder="Ej: 04141234567" required
+                            oninput="this.value = this.value.replace(/[^0-9+ \-]/g, '')" />
                     </div>
                 </div>
                 {% else %}
