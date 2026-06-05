@@ -68,5 +68,6 @@ urlpatterns = [
     path('agendar/<int:servicio_id>/', views.agendar_cita, name='agendar_cita'),
     path('empresa/nuevo-servicio/', views.crear_servicio, name='crear_servicio'),
     path('empresa/servicio/toggle/<int:servicio_id>/', views.toggle_servicio, name='toggle_servicio'),
+    path('empresa/servicio/eliminar/<int:servicio_id>/', views.eliminar_servicio, name='eliminar_servicio'),
     path('crear_servicio2/', TemplateView.as_view(template_name='citas/crear_servicio2.html'), name='crear_servicio2_prototype'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

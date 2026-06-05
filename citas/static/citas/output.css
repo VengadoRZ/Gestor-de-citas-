@@ -1217,9 +1217,6 @@
   .bg-indigo-100 {
     background-color: var(--color-indigo-100);
   }
-  .bg-on-surface {
-    background-color: var(--color-on-surface);
-  }
   .bg-orange-100 {
     background-color: var(--color-orange-100);
   }
@@ -1264,9 +1261,6 @@
   }
   .bg-red-50 {
     background-color: var(--color-red-50);
-  }
-  .bg-red-100 {
-    background-color: var(--color-red-100);
   }
   .bg-secondary {
     background-color: var(--color-secondary);
@@ -1704,6 +1698,9 @@
   .text-\[14px\] {
     font-size: 14px;
   }
+  .text-\[16px\] {
+    font-size: 16px;
+  }
   .text-\[18px\] {
     font-size: 18px;
   }
@@ -1868,17 +1865,11 @@
   .text-red-600 {
     color: var(--color-red-600);
   }
-  .text-red-700 {
-    color: var(--color-red-700);
-  }
   .text-secondary {
     color: var(--color-secondary);
   }
   .text-slate-700 {
     color: var(--color-slate-700);
-  }
-  .text-surface {
-    color: var(--color-surface);
   }
   .text-teal-700 {
     color: var(--color-teal-700);
@@ -1912,9 +1903,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-white) 90%, transparent);
     }
-  }
-  .capitalize {
-    text-transform: capitalize;
   }
   .uppercase {
     text-transform: uppercase;

@@ -396,3 +396,15 @@ def toggle_servicio(request, servicio_id):
         except:
             pass
     return redirect('crear_servicio')
+
+
+@login_required
+def eliminar_servicio(request, servicio_id):
+    if request.method == 'POST':
+        try:
+            servicio = get_object_or_404(Servicio, id=servicio_id, empresa=request.user.empresa)
+            servicio.delete()
+            messages.success(request, 'Servicio eliminado correctamente.')
+        except Exception as e:
+            messages.error(request, 'Hubo un error al eliminar el servicio.')
+    return redirect('crear_servicio')
