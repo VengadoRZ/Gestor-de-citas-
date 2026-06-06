@@ -53,18 +53,16 @@ urlpatterns = [
     
     path('reset/done/', auth_views.LoginView.as_view(template_name='registration/login.html', extra_context={'password_reset_complete': True}), name='password_reset_complete'),
     path('activate/<uidb64>/<token>/', views.activate_account, name='activate_account'),
-         
-# Para la Empresa: Ver sus citas del mes
+  
     path('empresa/agenda/', views.agenda_empresa, name='agenda_empresa'),
     
-    # Cambiar estado de cita
+    
     path('empresa/agenda/cambiar-estado/<int:cita_id>/', views.cambiar_estado_cita, name='cambiar_estado_cita'),
     
-    # Para el Cliente: Buscar y agendar
-    # Le puse name='catalogo_servicios' para que coincida con el HTML
+
     path('buscar/', views.catalogo_servicios, name='catalogo_servicios'),
     
-    # Esta ruta SIEMPRE debe recibir el ID del servicio
+
     path('agendar/<int:servicio_id>/', views.agendar_cita, name='agendar_cita'),
     path('empresa/nuevo-servicio/', views.crear_servicio, name='crear_servicio'),
     path('empresa/servicio/toggle/<int:servicio_id>/', views.toggle_servicio, name='toggle_servicio'),
