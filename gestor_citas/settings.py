@@ -50,11 +50,12 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGIN_REDIRECT_URL = 'completar_perfil'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 25
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'tuturno214@gmail.com'
-EMAIL_HOST_PASSWORD = 'tpyt covg pyge bbhp'
+EMAIL_HOST_PASSWORD = 'kdng tcxn ynis aoql'
 DEFAULT_FROM_EMAIL = 'tuturno214@gmail.com'
 PASSWORD_RESET_COMPLETE_URL = 'password_reset_complete'
 
