@@ -407,3 +407,4 @@ def eliminar_servicio(request, servicio_id):
             messages.success(request, 'Servicio eliminado correctamente.')
         except Exception as e:
             messages.error(request, 'Hubo un error al eliminar el servicio.')
+    return redirect('crear_servicio')
